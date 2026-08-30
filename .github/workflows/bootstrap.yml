@@ -1,28 +1,14 @@
 name: Bootstrap Resolution Master Lite
 
 on:
-  push:
-    branches: [main]
+  workflow_dispatch:
 
 permissions:
   contents: write
 
 jobs:
   bootstrap:
-    if: ${{ !contains(github.event.head_commit.message, '[lite-done]') }}
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Apply Resolution Master Lite patch
-        shell: bash
-        run: |
-          set -euxo pipefail
-          base64 -d .bootstrap/lite2.patch.gz.b64 | gunzip > /tmp/lite.patch
-          patch -p1 < /tmp/lite.patch
-          rm -rf .bootstrap
-          rm -f .github/workflows/bootstrap.yml
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add -A
-          git commit -m "Apply Resolution Master Lite customizations [lite-done]"
-          git push
+      - run: echo "Payload staging in progress"
