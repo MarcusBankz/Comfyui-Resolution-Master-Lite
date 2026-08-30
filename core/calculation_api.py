@@ -53,7 +53,7 @@ def register_calculation_routes():
         log.warning("Calculation routes unavailable because PromptServer or aiohttp is missing")
         return
 
-    @PromptServer.instance.routes.post("/resolutionmaster/calculate")
+    @PromptServer.instance.routes.post("/resolutionmasterlite/calculate")
     async def calculate_resolutionmaster(request):
         try:
             payload = await request.json()
@@ -79,4 +79,4 @@ def register_calculation_routes():
             return web.json_response({"ok": False, "error": str(error)}, status=500)
 
     _routes_registered = True
-    log.info("Registered calculation route", "/resolutionmaster/calculate")
+    log.info("Registered calculation route", "/resolutionmasterlite/calculate")

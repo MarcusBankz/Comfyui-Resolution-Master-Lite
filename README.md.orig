@@ -1,0 +1,673 @@
+<h1 align="center">ResolutionMaster – Precise resolution and aspect ratio control for ComfyUI</h1>
+
+
+<p align="center"><i>ResolutionMaster is a powerful ComfyUI custom node for precise resolution and aspect ratio control in AI image generation workflows. It provides an intuitive interface with advanced scaling options, preset management, latent output, and model-specific optimizations.</i></p>
+
+<p align="center">
+
+<a href="https://registry.comfy.org/publishers/azornes/nodes/Comfyui-Resolution-Master" style="display:inline-flex; align-items:center; gap:6px;">
+  <a href="https://registry.comfy.org/publishers/azornes/nodes/Comfyui-Resolution-Master"><img alt="ComfyUI" src="https://img.shields.io/badge/ComfyUI-1a1a1a?style=for-the-badge&logo=data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABwAAAAcCAMAAABF0y+mAAAASFBMVEVHcEwYLtsYLtkXLtkXLdkYLtkWLdcFIdoAD95uerfI1XLR3mq3xIP8/yj0/zvw/0FSYMP5/zKMmKQtPNOuuozj8FOhrZW7x4FMWFFbAAAABnRSTlMAUrPX87KxijklAAAA00lEQVR4AX3SBw6DMAxA0UzbrIzO+9+02GkEpoWP9hPZZs06Hw75aI3k4W/+wkQtnGZNhF1I34BzalQcxkmasY0b9raklNcvLYU1GNiiOeVWauOa/XS526gRyzpV/7HeUOG9Jp6vcsvUrCPeKg/3KBKBQhoTD1dQggPWzPVfFOIgo85/kR4y6oB/8SlIEh7wvmTuKd3wgLVW1sTfRBoR7oWVqy/U2NcrWDYMINE7NUuJuoV+2fhaWmnbjzcOWnRv7XbiLh/Y9dNUqk2y0QcNwTu7wgf+/BhsPUhf4QAAAABJRU5ErkJggg=="><img alt="Downloads" src="https://img.shields.io/badge/dynamic/json?color=%230D2A4A&label=&query=downloads&url=https://gist.githubusercontent.com/Azornes/685c440e952c0eadfefc2ca10fc347dd/raw/top_resolutionmaster.json&style=for-the-badge"></a>
+  <a href='https://github.com/Azornes/Comfyui-Resolution-Master' style="display:inline-flex; align-items:center; gap:6px;">
+  <img alt='GitHub Clones' src='https://img.shields.io/badge/dynamic/json?color=2F80ED&label=Clone&query=count&url=https://gist.githubusercontent.com/Azornes/dc1baa944bb2145d066bdf4e3f490cfc/raw/clone.json&logo=github&style=for-the-badge&labelColor=1a1a1a'></a>
+  <a href="https://visitorbadge.io/status?path=https%3A%2F%2Fgithub.com%2FAzornes%2FComfyui-Resolution-Master">
+    <img src="https://api.visitorbadge.io/api/combined?path=https%3A%2F%2Fgithub.com%2FAzornes%2FComfyui-Resolution-Master&countColor=%03ae5f&style=for-the-badge&labelStyle=none&labelColor=1a1a1a" /></a>
+  <img alt="Python 3.10+" src="https://img.shields.io/badge/Python-3.10+-2564ae?labelColor=1a1a1a&logo=data%3Aimage%2Fsvg%2Bxml%3Bbase64%2CPHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMTAiIGhlaWdodD0iMTEwIiB2aWV3Qm94PSIwLjIxIC0wLjA3NyAxMTAgMTEwIj48ZGVmcz48bGluZWFyR3JhZGllbnQgaWQ9ImEiIGdyYWRpZW50VW5pdHM9InVzZXJTcGFjZU9uVXNlIiB4MT0iNjMuODE1OSIgeTE9IjU2LjY4MjkiIHgyPSIxMTguNDkzNCIgeTI9IjEuODIyNSIgZ3JhZGllbnRUcmFuc2Zvcm09Im1hdHJpeCgxIDAgMCAtMSAtNTMuMjk3NCA2Ni40MzIxKSI%2BPHN0b3Agb2Zmc2V0PSIwIiBzdG9wLWNvbG9yPSIjMzg3RUI4Ii8%2BPHN0b3Agb2Zmc2V0PSIxIiBzdG9wLWNvbG9yPSIjMzY2OTk0Ii8%2BPC9saW5lYXJHcmFkaWVudD48bGluZWFyR3JhZGllbnQgaWQ9ImIiIGdyYWRpZW50VW5pdHM9InVzZXJTcGFjZU9uVXNlIiB4MT0iOTcuMDQ0NCIgeTE9IjIxLjYzMjEiIHgyPSIxNTUuNjY2NSIgeTI9Ii0zNC41MzA4IiBncmFkaWVudFRyYW5zZm9ybT0ibWF0cml4KDEgMCAwIC0xIC01My4yOTc0IDY2LjQzMjEpIj48c3RvcCBvZmZzZXQ9IjAiIHN0b3AtY29sb3I9IiNGRkUwNTIiLz48c3RvcCBvZmZzZXQ9IjEiIHN0b3AtY29sb3I9IiNGRkMzMzEiLz48L2xpbmVhckdyYWRpZW50PjwvZGVmcz48cGF0aCBmaWxsPSJ1cmwoI2EpIiBkPSJNNTUuMDIzLTAuMDc3Yy0yNS45NzEsMC0yNi4yNSwxMC4wODEtMjYuMjUsMTIuMTU2djEyLjU5NGgyNi43NXYzLjc4MUgxOC4xNDhjLTcuOTQ5LDAtMTcuOTM4LDQuODMzLTE3LjkzOCwyNi4yNSwwLDE5LjY3Myw3Ljc5MiwyNy4yODEsMTUuNjU2LDI3LjI4MWg5LjM0NFY2OC44NmMwLTUuNDkxLDIuNzIxLTE1LjY1NiwxNS40MDYtMTUuNjU2aDI2LjUzMWMzLjkwMiwwLDE0LjkwNi0xLjY5NiwxNC45MDYtMTQuNDA2VjE0LjU3OWMuMDAxLTMuMTUzLS41MzgtMTQuNjU2LTI3LjAzLTE0LjY1NnpNNDAuMjczLDguMzkyYzIuNjYyLDAsNC44MTMsMi4xNSw0LjgxMyw0LjgxMywwLDIuNjYxLTIuMTUxLDQuODEzLTQuODEzLDQuODEzcy00LjgxMy0yLjE1MS00LjgxMy00LjgxM2MwLTIuNjYzLDIuMTUxLTQuODEzLDQuODEzLTQuODEzeiIvPjxwYXRoIGZpbGw9InVybCgjYikiIGQ9Ik01NS4zOTcsMTA5LjkyM2MyNS45NTksMCwyNi4yODItMTAuMjcxLDI2LjI4Mi0xMi4xNTZWODUuMTczSDU0Ljg5N3YtMy43ODFoMzcuMzc1YzguMDA5LDAsMTcuOTM4LTQuOTU0LDE3LjkzOC0yNi4yNSwwLTIzLjMyMi0xMC41MzgtMjcuMjgxLTE1LjY1Ni0yNy4yODFIODUuMjF2MTMuMTI1YzAsNS40OTEtMi42MzEsMTUuNjU2LTE1LjQwNiwxNS42NTZINDMuMjcyYy0zLjg5MiwwLTE0LjkwNiwxLjg5Ni0xNC45MDYsMTQuNDA2djI0LjIxOWMwLDUuMjMsMy4xOTYsMTQuNjU2LDI3LjAzMSwxNC42NTZ6TTcwLjE0OCwxMDEuNDU0Yy0yLjY2MiwwLTQuODEzLTIuMTUxLTQuODEzLTQuODEzczIuMTUtNC44MTMsNC44MTMtNC44MTNjMi42NjEsMCw0LjgxMywyLjE1MSw0LjgxMyw0LjgxM3MtMi4xNTIsNC44MTMtNC44MTMsNC44MTN6Ii8%2BPC9zdmc%2B&style=for-the-badge">
+  <img alt="JavaScript" src="https://img.shields.io/badge/JavaScript-1a1a1a?style=for-the-badge&logo=javascript&logoColor=F7DF1E&labelColor=1a1a1a">
+  <a href="https://github.com/sponsors/Azornes" style="display: inline-flex; align-items: center; white-space: nowrap;">
+    <img src="https://img.shields.io/badge/Sponsor-EA4AAA?style=for-the-badge&logo=githubsponsors&logoColor=magenta&labelColor=1a1a1a" alt="Sponsor"><img src="https://img.shields.io/badge/--1a1a1a?style=for-the-badge&logo=github&logoColor=white" alt="GitHub"></a>
+<a href="https://ko-fi.com/azornes" style="display: inline-flex; align-items: center; white-space: nowrap;">
+  <img src="https://img.shields.io/badge/Ko--fi-F16061?style=for-the-badge&logo=ko-fi&logoColor=white" alt="Ko-Fi"></a>
+</p>
+
+<p align="center">
+  <strong>🔹 <a href="https://github.com/Azornes/Comfyui-Resolution-Master/tree/main?tab=readme-ov-file#-installation">Quick Start</a></strong>
+  &nbsp; | &nbsp;
+  <strong>⚠️ <a href="https://github.com/Azornes/Comfyui-Resolution-Master/tree/main?tab=readme-ov-file#%EF%B8%8F-known-issues--compatibility">Known Issues</a></strong>
+</p>
+
+
+
+https://github.com/user-attachments/assets/f9b51c0f-677c-410e-8980-3f75bb4f8032
+
+https://github.com/user-attachments/assets/f15ea0c2-0a65-4578-b2c7-db812bf4020c
+
+---
+
+## Detailed Features
+
+### 🎯 Core Functionality
+- **Interactive 2D Canvas Control**: Visually select resolution with real-time preview
+  - **Normal Drag**: Standard behavior with snap to canvas grid (controlled by `canvas_step_x/y`)
+  - **Shift + Drag**: Preserves aspect ratio while dragging (with snap enabled)
+  - **Ctrl + Drag**: Disables snap for fine-tuning without grid constraints
+  - **Ctrl + Shift + Drag**: Preserves aspect ratio with 1px precision (no snap)
+- **Smart Rescaling**: Automatic calculation of rescale factors for upscaling workflows
+- **Snap Button**: Round current dimensions to the snap value (NOT related to 2D canvas grid)
+- **Real-time Info Display**: Shows current resolution, megapixels, p-value and aspect ratio
+- **Visual Output Values**: Color-coded clickable values at output slots (blue/pink/green)
+
+### 📐 Advanced Scaling Options
+- **Manual Scale**: Direct multiplier control (ex. 2.0x)
+- **Resolution Targeting**: Scale to standard resolutions (ex. 480p, 720p, 1080p, 2160p)
+- **Megapixel Targeting**: Scale to specific megapixel counts (ex. 5 MP)
+- **Live Preview**: See resulting dimensions before applying changes
+
+### 🎨 Preset Categories
+Extensive preset library organized by use case:
+
+- **Standard**: Common aspect ratios (1:1, 4:3, 16:9, 21:9, etc.)
+- **SDXL**: Optimized resolutions for Stable Diffusion XL
+- **Flux**: Flux model optimized presets with smart constraints
+- **Flux.2**: Flux.2 optimized presets with 128-channel latent support
+- **WAN**: Video model presets with resolution recommendations
+- **HiDream Dev**: HiDream model optimized presets
+- **Qwen-Image**: Qwen-Image model optimized presets
+- **ZImageTurbo**: Official discrete Z-Image-Turbo resolutions
+- **Social Media**: Instagram, Twitter, Facebook, YouTube optimized sizes
+- **Print**: Standard print formats (A4, Letter, photo sizes)
+- **Cinema**: Professional film aspect ratios (2.39:1, 1.85:1, etc.)
+- **Display Resolutions**: Standard screen/video resolutions (720p, 1080p, 4K, 8K, etc.)
+
+### 🤖 Model-Specific Optimizations
+
+| Mode | Best For | Optimization Rules |
+|------|----------|--------------------|
+| **SDXL** | Stable Diffusion XL generation | Enforces officially supported fixed resolutions for optimal generation quality |
+| **Flux** | Flux image workflows | Uses 32px increments, keeps dimensions between 320px and 2560px, and limits output to 4.0 MP |
+| **Flux.2** | Flux.2 workflows | Uses Flux.2-specific preset matching and supports the `latent_128x16` latent type |
+| **Krea 2** | Krea 2 Turbo/RAW workflows | Finds the closest Krea 2 preset by dimensions and aspect ratio (multiples of 16, 1K–2K for Turbo, 1K for RAW) |
+| **WAN** | Video generation | Supports 320p to 820p, uses 16px increments, keeps video-friendly ratios, and recommends 480p or 720p |
+| **HiDream Dev** | HiDream preset matching | Finds the closest HiDream Dev preset by dimensions and aspect ratio, including flipped orientations |
+| **Qwen-Image** | Qwen-Image workflows | Keeps images in the ~0.6 MP to 4.2 MP range, preserving valid inputs and scaling out-of-range inputs |
+| **ZImageTurbo** | Z-Image-Turbo workflows | Selects the closest active category resolution by aspect ratio and pixel count while preserving orientation; the built-in list uses official resolutions |
+
+### Adding a Model Profile
+
+Model-specific behavior is declared in `js/calculations/model_profiles.js`. To add
+a model that uses an existing calculation strategy:
+
+1. Add its resolutions to `js/presets/preset_categories.js`.
+2. Add one profile containing its strategy, options, and information message.
+3. Add focused tests for the model's expected resolutions.
+
+The frontend includes the profile in the existing preset JSON sent to Python, so
+no backend category branch or workflow schema change is required. If a model
+needs a genuinely new algorithm, register one reusable strategy in
+`core/auto_detect.py` and add its name to the frontend strategy contract. The
+contract tests ensure every built-in category has a supported profile and an
+information message. The backend legacy profile map exists only to keep older
+saved workflows working.
+
+---
+
+## 🚀 Installation
+
+### Install via ComfyUI-Manager
+1. Search `Comfyui-Resolution-Master` in ComfyUI-Manager and click `Install` button.
+2. Restart ComfyUI.
+
+### Manual Install
+1. Install [ComfyUi](https://github.com/comfyanonymous/ComfyUI). I use [portable](https://docs.comfy.org/installation/comfyui_portable_windows) version.
+2. Clone this repo into `custom_modules`:
+    ```bash
+    cd ComfyUI/custom_nodes/
+    git clone https://github.com/Azornes/Comfyui-Resolution-Master.git
+    ```
+3. Start up ComfyUI.
+
+---
+
+## Usage
+
+### Basic Operation
+
+1. Add the "Resolution Master" node to your workflow
+2. Connect the outputs to your image generation nodes:
+   - `width`: Current width value (click the blue number to set custom width)
+   - `height`: Current height value (click the pink number to set custom height)
+   - `rescale_factor`: Calculated scale factor for upscaling (green number)
+
+### Workflow Examples
+
+#### Example 1: Image Resizing Workflow
+If you want to resize an input image using Resolution Master:
+
+1. **Load Image**: Add a "Load Image" node and connect your image.
+2. **Connect to Resolution Master**: Link the image output to the input of Resolution Master (enables Auto-Detect).
+3. **Configure Resolution Master**:
+   - Enable **Auto-Detect** toggle to read input image dimensions.
+   - Select a preset or set target resolution/aspect ratio.
+   - Use **Auto-Fit** or **Auto-Resize** for automatic adaptation.
+4. **Resize Image**: Connect Resolution Master's `width` and `height` outputs to a "Resize Image" node's width/height inputs.
+5. **Connect Image**: Link the original image from "Load Image" to the "Resize Image" node's image input.
+6. **Output**: The resized image will match your target specifications.
+
+**Note**: Resolution Master doesn't process images directly—it calculates dimensions. Always connect it to a resizing node (like "Resize Image") for actual image transformation.
+
+#### Example 2: Generation Workflow
+For new image generation:
+1. Connect Resolution Master's `width`/`height` to your sampler/checkpoint nodes.
+2. Use `rescale_factor` with upscaling nodes if needed.
+3. Enable Auto-Detect if using an input image as reference.
+
+---
+
+## 🎮 Understanding the Controls
+
+### Actions Section
+- **⇄ Swap Button**: Swaps width and height values
+- **⊞ Snap Button**: Rounds the current width/height to the nearest snap value (e.g., if snap=64 and width=520, clicking Snap makes it 512)
+- **Snap Value Slider**: Sets the value used by the Snap button (16-256px). **Important**: This does NOT change the 2D canvas grid behavior!
+
+### 2D Canvas
+- **White Dot**: Drag to set resolution visually
+- **Grid Dots**: Visual guides controlled by `canvas_step_x/y` properties (NOT by the snap slider)
+- **Blue Rectangle**: Shows current resolution selection
+
+### Scaling Section
+- **⬆ Manual Scale Button**: Applies the manual scale factor to current dimensions
+- **📺 Resolution Button**: Scales to target resolution (e.g., 1080p)
+- **📷 Megapixels Button**: Scales to target megapixel count
+- **Prioritize Ratio Checkbox**: Preserves the current aspect ratio as the top priority when applying scaling. The final dimensions may be slightly above or below the selected scale, p-value, or megapixel target.
+- **Radio Buttons**: Select which scaling mode affects the `rescale_factor` output
+
+### Auto-Detect Section
+- **Auto-detect Toggle**: ON/OFF switch for automatic dimension detection from connected images
+  - Monitors input connection every second
+  - Updates dimensions when new image is detected
+  - Shows detected resolution in green text
+- Auto-Detect buttons can be clicked manually. The checkbox beside each button enables that same action automatically for newly detected images.
+- **🎯 Auto-fit Button**: Finds best matching preset for current dimensions
+  - Analyzes both aspect ratio and total pixels
+  - Checks both normal and flipped orientations
+  - Applies category-specific scaling when Custom Calc is enabled
+- **Fit Checkbox**: Automatically run Fit when dimensions change
+  - Located next to the Fit button
+  - Only active when category is selected and image detected
+- **📐 Auto-Resize Button**: Applies scaling based on selected mode (Manual/Resolution/Megapixels)
+  - Integrates with active scaling mode from Scaling section
+  - Maintains manual scale value without reset to 1.0x
+- **Resize Checkbox**: Automatically apply scaling when new image is detected
+  - Works in sequence after Auto-fit (if enabled)
+  - Applies chosen scaling mode to detected dimensions
+- **Auto-Snap Button**: Snaps current dimensions to the configured snap value
+  - Uses the same snap logic as the Snap button in the Actions section
+  - Prevents dimensions from snapping down to 0; small dimensions snap up to at least one snap step
+- **Snap Checkbox**: Automatically snap dimensions after Resize when a new image is detected
+  - Runs in sequence after Auto-Fit and Auto-Resize
+  - Useful for keeping detected or resized dimensions aligned to model-friendly multiples
+- **Detected Text (green)**: Click to apply the detected image's original dimensions
+- **⚡ Auto-calc Button**: Applies model-specific calculations to current dimensions
+- **Calc Checkbox**: Automatically applies model-specific optimizations after Fit, Resize, and Snap
+- **Show Toggle**: Shows or hides the orange Calc information panel without changing Auto-Calc behavior
+
+### Presets Section
+- **Category Dropdown**: Select preset category (Standard, SDXL, Flux, etc.)
+- **Preset Dropdown**: Choose specific preset from selected category
+
+---
+
+## 🔧 Node Properties Configuration
+
+You can customize various parameters by accessing the node's Properties panel in ComfyUI. Here's a complete list of all configurable properties:
+
+### Canvas Properties
+- **`canvas_min_x`** / **`canvas_min_y`**: Minimum values for X and Y axes (default: 0)
+- **`canvas_max_x`** / **`canvas_max_y`**: Maximum values for X and Y axes (default: 2048, max: 32768)
+  - Increase these for working with higher resolutions (e.g., 8192 for 8K)
+- **`canvas_step_x`** / **`canvas_step_y`**: Grid snap increments for the 2D canvas (default: 64)
+  - This controls the grid dots and snap behavior when dragging on the 2D canvas
+  - **NOT** controlled by the snap slider in the Actions section
+- **`canvas_decimals_x`** / **`canvas_decimals_y`**: Decimal precision for X/Y values (default: 0)
+- **`canvas_snap`**: Enable/disable grid snapping on 2D canvas (default: true)
+- **`canvas_dots`**: Show/hide grid dots on 2D canvas (default: true)
+- **`canvas_frame`**: Show/hide the blue selection frame (default: true)
+
+### Action Sliders Range
+- **`action_slider_snap_min`**: Minimum value for snap slider (default: 16)
+- **`action_slider_snap_max`**: Maximum value for snap slider (default: 256)
+- **`action_slider_snap_step`**: Step increment for snap slider (default: 16)
+
+### Scaling Sliders Range
+- **`scaling_slider_min`**: Minimum manual scale factor (default: 0.1)
+- **`scaling_slider_max`**: Maximum manual scale factor (default: 4.0)
+- **`scaling_slider_step`**: Step increment for scale slider (default: 0.1)
+- **`megapixels_slider_min`**: Minimum megapixels target (default: 0.5)
+- **`megapixels_slider_max`**: Maximum megapixels target (default: 6.0)
+- **`megapixels_slider_step`**: Step increment for megapixels slider (default: 0.1)
+
+### Section Collapse States
+- **`section_extraControls_collapsed`**: Canvas Only mode state. When enabled, all extra control sections below the 2D canvas are hidden (default: false)
+  - Toggle it with the compact button in the top-right corner of the node title bar.
+- **`section_actions_collapsed`**: Actions section collapsed state (default: false)
+- **`section_scaling_collapsed`**: Scaling section collapsed state (default: false)
+- **`section_autoDetect_collapsed`**: Auto-Detect section collapsed state (default: false)
+- **`section_presets_collapsed`**: Presets section collapsed state (default: false)
+
+### Example: Customizing for 8K Workflow
+1. Right-click on the ResolutionMaster node
+2. Select "Properties"
+3. Set `canvas_max_x` and `canvas_max_y` to 8192
+4. Set `canvas_step_x` and `canvas_step_y` to 128 for larger grid increments
+5. Set `manual_slider_max_w` and `manual_slider_max_h` to 8192
+
+### Working with Presets
+
+1. **Select a Category**: Choose from the dropdown (e.g., "SDXL", "Social Media")
+2. **Choose a Preset**: Select specific aspect ratio or resolution
+3. **Enable Custom Calc** (optional): Checkbox appears next to preset dropdown
+   - Activates model-specific constraints
+   - Automatically adjusts dimensions to model requirements
+4. **Apply**: Dimensions are automatically updated
+
+---
+
+## 🎯 Advanced Preset Management
+
+ResolutionMaster includes a powerful **Preset Manager** system for creating, organizing, and managing custom presets. Access it by clicking the **"⚙️ Manage Presets"** button in the Presets section.
+
+### Preset Manager Features
+
+#### 📋 List View
+The main view shows all your custom presets organized by category:
+
+- **Statistics Header**: Displays total categories and preset count
+- **Category Sections**: Each category shows its presets with dimensions
+- **Bulk Operations**: Select multiple presets for batch deletion (Shift+Click for range selection)
+- **Empty State**: Helpful message when no custom presets exist
+
+#### ➕ Add/Edit Preset View
+Create or modify presets with an intuitive interface:
+
+- **Category Selection**: Choose target category from dropdown
+- **Rename Category**: Click the ✏️ button next to category name to rename
+- **Quick Add Form**: 
+  - Name field with real-time validation
+  - Width and Height inputs (minimum 64px)
+  - Live preview showing aspect ratio and shape visualization
+  - Visual feedback for edit mode (green accents) vs add mode (blue accents)
+- **Preset Preview**: Grid view of all presets in selected category
+  - Click any preset to load its values into the form for editing
+  - Delete custom presets or hide/unhide built-in presets
+  - Visual indicators for custom (⚙️ icon) and hidden presets
+
+#### 🔄 Drag & Drop Operations
+
+The Preset Manager supports advanced drag & drop with visual feedback:
+
+##### Preset Reordering & Moving
+- **Drag Handle (left side)**: Drag presets to reorder within category or move between categories
+- **Visual Indicators**:
+  - **Blue line**: Reordering within same category
+  - **Orange line**: Moving to different category
+  - **Red line**: Invalid drop (name conflict)
+  - **Green line**: Duplicate/clone operation
+- **Modifier Keys**:
+  - **Normal Drag**: Move preset to new position
+  - **Drag by Clone Handle (⊕)**: Duplicate preset to new location
+
+##### Category Reordering
+- **Drag Category Headers**: Reorder entire categories by dragging their headers
+- **Drop Zones**: 
+  - Above any category header
+  - Below last category (in category section body)
+  - At top (drop on statistics header)
+
+#### 🔄 Clone/Duplicate Presets
+- **Clone Handle (⊕ icon)**: Drag this handle to duplicate a preset
+- **Auto-naming**: Automatically generates unique names (e.g., "Preset (1)", "Preset (2)")
+- **Cross-category Cloning**: Duplicate presets between different categories
+- **Smart Positioning**: Dropped preset appears at the exact position where you drop it
+
+#### ✏️ Rename Functionality
+
+##### Inline Renaming
+- **Double-click** on any preset or category name to rename in-place
+- **Enter**: Save changes
+- **Escape**: Cancel editing
+- **Auto-validation**: Prevents duplicate names, empty names
+- **Auto-unique naming** (categories): Adds suffix "(1)", "(2)" if name exists
+
+##### Rename Dialog (Categories)
+- Click ✏️ button next to category name in Add view
+- Real-time validation with error messages
+- Shows current name for reference
+- Enter to apply, Escape to cancel
+
+#### 📝 JSON Editor
+
+Advanced users can directly edit the preset configuration as JSON:
+
+- **Multiple Editor Modes**: Code, Tree, Form, Text, View, Preview
+- **Syntax Highlighting**: VS Code-style dark theme (Twilight)
+- **Real-time Validation**: Instant feedback on JSON syntax errors
+- **Drag & Drop**: Drop .json files directly into the editor to load them
+- **Full Editing**: Add, remove, or modify categories and presets
+- **Import/Export**: 
+  - Apply changes to replace current configuration
+  - Export current configuration as JSON file
+- **All Features Available**: Sort, transform, search, and more
+
+**Access**: Click **"{ } JSON Editor"** button in Preset Manager footer
+
+**Use Cases**:
+- Bulk editing multiple presets
+- Importing preset collections from files
+- Creating complex preset structures
+- Backup and restore configurations
+- Sharing preset collections with others
+
+#### 🗑️ Deletion Options
+
+- **Individual Delete**: Click 🗑️ button on any custom preset
+- **Hide Built-in Presets**: Click 🗑️ on built-in presets to hide them; they remain available in Preset Manager and exports, but are excluded from selectors, Auto-Fit, and Auto-Calc
+- **Unhide**: Click 🗑️ again on hidden presets to restore visibility
+- **Bulk Delete**: 
+  - Select multiple presets using checkboxes
+  - Click **"Delete Selected"** button
+  - Shift+Click for range selection
+- **Delete Empty Categories**: Option in footer to clean up categories with no presets
+
+#### 🎨 Visual Feedback & Tooltips
+
+- **Color-coded Indicators**: Different colors for different drag operations
+- **Interactive Tooltips**: Hover over buttons for helpful descriptions
+- **Mode Indicators**: Visual distinction between add and edit modes
+- **Real-time Validation**: Instant feedback on errors and conflicts
+- **Shape Preview**: Visual representation of aspect ratio in add/edit form
+
+#### ⌨️ Keyboard Shortcuts & Interactions
+
+- **Double-click**: Rename preset or category name
+- **Enter**: Apply rename or save changes
+- **Escape**: Cancel current operation or close dialog
+- **Shift+Click**: Select range of presets (bulk operations)
+- **Ctrl/Cmd+Drag**: Fine control for drag operations
+
+### Import/Export Presets
+
+#### Export
+1. Open Preset Manager
+2. Click **"📥 Export JSON"** button
+3. JSON file downloads with current preset configuration
+4. Share or backup your custom presets
+
+#### Import
+1. Open Preset Manager
+2. Click **"📤 Import JSON"** button
+3. Choose merge or replace mode:
+   - **Merge**: Add new presets, keep existing ones
+   - **Replace**: Completely replace current configuration
+4. Select your .json file
+5. Presets are loaded instantly
+
+**Alternative**: Use the JSON Editor's drag & drop feature to load preset files directly
+
+### Preset Manager Tips
+
+1. **Organize by Category**: Keep related presets together for easier management
+2. **Use Descriptive Names**: Clear names make presets easier to find and use
+3. **Clone for Variations**: Duplicate similar presets and adjust slightly
+4. **Regular Backups**: Export your presets periodically
+5. **Hide Unused Built-ins**: Declutter your preset list by hiding unused built-in presets
+6. **Keyboard Navigation**: Use double-click rename for quick adjustments
+7. **Visual Validation**: Watch the preview shape when creating presets to verify aspect ratio
+8. **Drag to Organize**: Quickly reorder presets and categories with drag & drop
+
+### Scaling Workflow
+
+The node provides three scaling methods that work together:
+
+1. **Set Base Resolution**: Use presets or manual input
+2. **Choose Scaling Method**:
+   - Manual: Direct multiplier
+   - Resolution: Target specific output resolution
+   - Megapixels: Target specific pixel count
+3. **Apply Scale**: Updates dimensions while maintaining aspect ratio
+   - Enable **Prioritize Ratio** when exact aspect ratio should matter more than hitting the scale target exactly. For example, a 3.0 MP target may resolve to 2.99 MP or 3.01 MP if that is the closest exact-ratio result.
+4. **Use Rescale Factor**: Connect to upscaling nodes in your workflow
+
+### Snap Functionality
+
+- **Snap Button**: Rounds dimensions to nearest grid value
+- **Adjustable Grid**: 16px to 256px increments (adjustable via slider)
+- **Smart Snapping**: Respects model constraints when Custom Calc is enabled
+- **Canvas Drag Modifiers**:
+  - **Normal Drag**: Standard behavior with snap to grid
+  - **Shift + Drag**: Preserves aspect ratio while dragging (with snap enabled)
+  - **Ctrl + Drag**: Disables snap for fine-tuning without grid constraints
+  - **Ctrl + Shift + Drag**: Preserves aspect ratio with 1px precision (no snap)
+
+### Auto-Detect Automation Order
+
+The detailed controls are described in **Understanding the Controls > Auto-Detect Section**. When multiple Auto-Detect checkboxes are enabled, actions run in this order:
+
+1. **Fit**: Match the detected size to the closest preset.
+2. **Resize**: Apply the active scaling mode.
+3. **Snap**: Round dimensions to the configured snap value.
+4. **Calc**: Apply model-specific constraints.
+
+---
+
+## Output Values
+
+- **width** (INT): Selected width in pixels
+- **height** (INT): Selected height in pixels
+- **rescale_factor** (FLOAT): Calculated scaling factor for external upscaling nodes
+  - This value is used when you want to upscale/downscale your image using external nodes
+  - Changes based on selected scaling mode (manual scale, resolution target, or megapixels target)
+  - Connect this output to upscaling nodes in your workflow for resolution-independent scaling
+- **batch_size** (INT): Number of latent images in the batch
+  - Configurable via the batch_size input parameter (default: 1, range: 1-4096)
+  - Use this when you need to generate multiple images with the same resolution settings
+  - Connect to nodes that support batch processing
+- **latent** (LATENT): Generated empty latent tensor ready for sampling
+  - Automatically created based on width, height, batch_size, and latent_type
+  - `latent_4x8`: `[batch_size, 4, height/8, width/8]` for SD/SDXL/Flux-style latents
+  - `latent_128x16`: `[batch_size, 128, height/16, width/16]` for Flux.2-style latents
+  - Connect directly to KSampler or other sampling nodes
+  - Eliminates the need for a separate "Empty Latent Image" node
+
+Values are shown directly at output slots for quick reference.
+
+### Rescale Factor Modes
+
+The rescale factor adapts based on your selection (choose via radio buttons):
+- **Manual Mode**: Uses the manual scale slider value (adjustable 0.1x to 4.0x)
+- **Resolution Mode**: Calculates factor to reach target resolution (p-value based)
+- **Megapixels Mode**: Calculates factor to reach target pixel count (0.5 to 6.0 MP)
+
+Each scaling row shows:
+- Control button for immediate application (⬆, 📺, 📷)
+- Adjustment method (slider/dropdown)
+- Calculated scale factor
+- Preview of resulting dimensions
+- Radio button to set as active rescale mode
+
+When **Prioritize Ratio** is enabled, the preview and applied dimensions use the closest exact aspect-ratio match. This can make the final output slightly different from the selected 1.1x, p-value, or MP target.
+
+---
+
+## 🔧 Understanding rescale_factor Behavior
+
+**Important**: The `rescale_factor` output is **not** a simple "scale from input" value. It's a **workflow control parameter** designed for professional ComfyUI pipelines.
+
+### How rescale_factor Actually Works
+
+The `rescale_factor` represents your **scaling intent** for downstream nodes (like upscalers), not the relationship between input and current resolution.
+
+#### Key Concepts:
+
+1. **Base Resolution**: The current width/height values (set manually, via presets, or auto-detected)
+2. **Scaling Intent**: What you want to achieve (manual scale, target resolution, or target megapixels)
+3. **rescale_factor**: The calculated multiplier to achieve your scaling intent
+
+#### Three Scaling Modes Control rescale_factor:
+
+- **Manual Mode**: Uses the manual scale slider value (0.1x to 4.0x)
+- **Resolution Mode**: Calculates factor to reach target resolution (p-value based)
+- **Megapixels Mode**: Calculates factor to reach target pixel count (0.5 to 6.0 MP)
+
+### Common Misconceptions
+
+❌ **Wrong**: "rescale_factor should reset to 1.0 when I connect a new image"
+✅ **Correct**: rescale_factor maintains your scaling intent regardless of input changes
+
+❌ **Wrong**: "rescale_factor should show the ratio between input and current resolution"
+✅ **Correct**: rescale_factor shows the multiplier needed to achieve your target scaling
+
+### Practical Example
+
+```
+Workflow Setup:
+1. Connect 512×512 image → auto-detect sets base resolution to 512×512
+2. Set resolution target to 1080p → rescale_factor calculates ~2.81x
+3. Connect different 1024×1024 image → base resolution updates to 1024×1024
+4. rescale_factor recalculates to ~1.41x (to still reach 1080p target)
+```
+
+**Why this happens**: Your scaling intent (reach 1080p) remains constant, but the required multiplier changes based on the new input resolution.
+
+### Auto-Detect + Scaling Workflow
+
+When using auto-detect with scaling:
+
+1. **Auto-detect updates base resolution** from connected images
+2. **Auto-Fit can match the detected size** to the closest preset when enabled
+3. **Auto-Resize can apply the active scaling mode** (manual/resolution/megapixel)
+4. **Auto-Snap can round the result** to the configured snap value when enabled
+5. **Auto-Calc can apply model-specific constraints** when enabled
+6. **rescale_factor recalculates** to maintain your scaling intent
+7. **Canvas drag operations** update base resolution but preserve scaling intent
+
+This design allows **resolution-independent workflows** where you can swap input images without breaking your scaling logic.
+
+### Canvas Drag Behavior
+
+When dragging the canvas with different modifiers:
+
+- **Normal Drag**: Updates base resolution, rescale_factor adjusts to maintain scaling intent
+- **Shift + Drag**: Preserves aspect ratio, rescale_factor adjusts accordingly
+- **Ctrl + Drag**: Fine-tuning without snap, rescale_factor adjusts
+- **Ctrl + Shift + Drag**: Precise aspect ratio control, rescale_factor adjusts
+
+The rescale_factor **always reflects your active scaling mode**, not the drag operation itself.
+
+---
+
+## Examples
+
+### Example 1: Understanding Snap Button vs Canvas Grid
+**Snap Button (Actions Section)**:
+- Current resolution: 520×380
+- Snap value slider: 64
+- Click Snap button → Resolution becomes 512×384 (rounded to nearest 64)
+
+**2D Canvas Grid** (controlled by properties):
+- `canvas_step_x` = 32, `canvas_step_y` = 32
+- When dragging on canvas, resolution snaps to 32px increments
+- The snap slider does NOT affect this - only `canvas_step_x/y` properties do!
+
+### Example 2: SDXL Portrait Generation
+1. Select "SDXL" category
+2. Choose "3:4 Portrait (768×1024)"
+3. Enable "Custom Calc" for SDXL optimization
+4. Connect to your SDXL workflow
+
+### Example 3: Social Media Content
+1. Select "Social Media" category
+2. Choose "Instagram Square (1080×1080)"
+3. Use resolution scaling to target 2160p for high quality
+4. Apply rescale factor in upscaling node
+
+### Example 4: Flux Model Generation
+1. Select "Flux" category
+2. Enable "Custom Calc" for automatic constraints
+3. Choose any preset - dimensions auto-adjust to Flux requirements
+4. Node enforces 32px increments and 4MP limit
+
+---
+
+## Tips & Best Practices
+
+1. **Start with Presets**: Use category presets as starting points, then fine-tune
+2. **Enable Custom Calc**: For SDXL, Flux, Flux.2, WAN, HiDream Dev, and Qwen-Image workflows to keep dimensions model-friendly
+3. **Use Snap for Clean Values**: Helps avoid odd dimensions that may cause issues
+4. **Monitor Info Messages**: Pay attention to mode-specific recommendations
+5. **Leverage Rescale Factor**: Connect to upscaling nodes for resolution-independent workflows
+
+### Working with High Resolutions (Above 2K)
+
+The node now supports outputs up to 32K resolution. When working with very high resolutions:
+
+- **Visual Representation**: The 2D canvas may appear distorted at extreme resolutions as it's optimized for the default 2048x2048 range
+- **Actual Outputs**: The width/height outputs maintain correct aspect ratios regardless of canvas appearance
+- **Solution**: Use the Properties panel to adjust `canvas_max_x` and `canvas_max_y` values to match your working resolution range
+  - Example: For 8K work, set both to 8192
+  - Example: For 32K work, set both to 32768
+- This adjustment fixes the visual representation while maintaining accurate output values
+
+### Internal Properties
+- **canvas_min_x/y**: Minimum values for X and Y axes (default: 0)
+- **canvas_max_x/y**: Maximum values for X and Y axes (default: 2048, adjustable up to 32768)
+- **canvas_step_x/y**: Step values for grid snapping
+- **canvas_decimals_x/y**: Decimal precision settings
+- **Visual options**: dots, frame, snap toggles
+
+---
+
+## ⚠️ Known Issues / Compatibility
+
+#### ○ ‎ Conflict with comfyui-mixlab-nodes
+>  Some users have reported that the *Resolution Master* node appears completely blank when added to the canvas.  
+>  This issue is caused by a conflict with **comfyui-mixlab-nodes**.  
+
+>  ✅ Temporary Fix: Disable or uninstall `comfyui-mixlab-nodes` – the node will then display and work correctly.
+>  👉 Until a proper fix is implemented in `comfyui-mixlab-nodes`, the only workaround is disabling `comfyui-mixlab-nodes` or manual patch (see below).  
+
+<details>
+<summary><strong>🔧 Advanced explanation and manual patch (click to expand)</strong></summary>
+
+- If you *really* want or need to use comfyui-mixlab-nodes despite this, here’s the deal:
+  The problem occurs because **mixlab overrides the `onDrawForeground` method of other nodes**, which breaks their display. This behavior is, frankly, unacceptable since it hijacks a method other nodes legitimately rely on. The good news is that mixlab only uses this override if the method is defined in the prototype, which means we can adjust it safely.  
+
+In `ui_mixlab.js` (see [source line here](https://github.com/shadowcz007/comfyui-mixlab-nodes/blob/67c974c96e6472316cb4bf4326281d9f86a25ae6/web/javascript/ui_mixlab.js#L2186C11-L2186C55)), replace this part:  
+
+```js
+const orig = node.__proto__.onDrawForeground;
+```
+
+with this safer version:  
+
+```js
+const orig = node.onDrawForeground ?? node.__proto__.onDrawForeground;
+```
+
+With this modification, the Resolution Master node (and potentially other affected nodes) will render correctly again.  
+You can either apply this tweak manually or report it to the mixlab authors so it can be properly integrated upstream.  
+
+📌 *Full discussion and context are available [here](https://github.com/Smirnov75/ComfyUI-mxToolkit/issues/28#issuecomment-2603091317)*
+
+</details>
+
+---
+
+#### ○ ‎ Compatibility with Modern Node 2.0 Design (Vue Nodes)
+> **Modern Node Design (Vue Nodes)** is fully supported starting with **version 2.0.0**.  
+>  
+> ⚠️ **Note:** Versions prior to 2.0.0 do not support the Vue Nodes display system. If you are using an older version of this node and experience rendering or interaction issues, you will need to disable it:  
+> Go to **Settings → (search) "Vue Nodes" → Disable "Modern Node Design (Vue Nodes)"**.
+
+---
+
+## 📜 License
+
+This project is licensed under the MIT License. Feel free to use, modify, and distribute.
+
+---
+
+## 💖 Support / Sponsorship
+• ⭐ Give a star — it means a lot to me!  
+• 🐛 Report a bug or suggest a feature  
+• 💖 If you’d like to support my work:  
+👉 [GitHub Sponsors](https://github.com/sponsors/Azornes)

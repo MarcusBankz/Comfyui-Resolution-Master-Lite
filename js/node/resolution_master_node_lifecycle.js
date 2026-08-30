@@ -498,28 +498,21 @@ export const nodeLifecycleMethods = {
         };
 
         const helpButton = createButton('help', '?', 'Resolution Master help');
-        const toggleButton = createButton('toggle', '−', 'Minimize Resolution Master controls');
         helpButton.addEventListener('click', event => {
             event.stopPropagation();
             this.showHelpDialog();
         });
-        toggleButton.addEventListener('click', event => {
-            event.stopPropagation();
-            this.handleSectionHeaderClick('extraControlsHeader');
-            this.syncVueCompatHeaderControls();
-        });
 
-        container.append(helpButton, toggleButton);
+        container.append(helpButton);
         this._vueCompatHeaderControls = {
             container,
             headerElement,
             headerPosition: headerElement.style.position,
             headerPaddingRight: headerElement.style.paddingRight,
-            helpButton,
-            toggleButton
+            helpButton
         };
         headerElement.style.position = 'relative';
-        headerElement.style.paddingRight = '62px';
+        headerElement.style.paddingRight = '36px';
         headerElement.append(container);
         this.syncVueCompatHeaderControls();
     },
@@ -528,22 +521,9 @@ export const nodeLifecycleMethods = {
         const controls = this._vueCompatHeaderControls;
         if (!controls) return;
 
-        const isCompact = Boolean(this.collapsedSections?.extraControls);
         controls.helpButton.style.background = 'rgba(255,255,255,0.08)';
         controls.helpButton.style.borderColor = 'rgba(255,255,255,0.25)';
         controls.helpButton.style.color = '#cfcfcf';
-        controls.toggleButton.textContent = isCompact ? '+' : '−';
-        controls.toggleButton.title = isCompact
-            ? 'Expand Resolution Master controls'
-            : 'Minimize Resolution Master controls';
-        controls.toggleButton.setAttribute('aria-label', controls.toggleButton.title);
-        controls.toggleButton.style.background = isCompact
-            ? 'rgba(90,170,255,0.45)'
-            : 'rgba(255,255,255,0.08)';
-        controls.toggleButton.style.borderColor = isCompact
-            ? 'rgba(120,190,255,0.85)'
-            : 'rgba(255,255,255,0.25)';
-        controls.toggleButton.style.color = isCompact ? '#fff' : '#cfcfcf';
     },
 
     teardownVueCompatHeaderControls() {
@@ -1037,16 +1017,12 @@ export const nodeLifecycleMethods = {
 
         let currentY = this.getManualContentStartY();
         const spacing = this.getManualSpacing();
-        const canvasHeight = this.getManualCanvasHeight(currentY, false);
-        currentY += canvasHeight + this.getCanvasInfoGap();
-        currentY += 15 + spacing;
         if (this.collapsedSections?.extraControls) {
             return currentY + 20;
         }
         const sectionHeights = {
             actions: this.collapsedSections?.actions ? 25 : 55,
             scaling: this.collapsedSections?.scaling ? 25 : 155,
-            autoDetect: this.collapsedSections?.autoDetect ? 25 : 135,
             presets: this.collapsedSections?.presets ? 25 : 55
         };
         Object.values(sectionHeights).forEach(height => {
@@ -1060,7 +1036,9 @@ export const nodeLifecycleMethods = {
     },
 
     getManualContentStartY() {
-        return this.collapsedSections?.extraControls ? 2 : LiteGraph.NODE_TITLE_HEIGHT + 2;
+        // Reserve a clean top band for the three output slots (width, height, latent)
+        // before the body of the node begins.
+        return this.collapsedSections?.extraControls ? 2 : 82;
     },
 
     getManualSpacing() {
@@ -1119,6 +1097,19 @@ export const nodeLifecycleMethods = {
         }
     },
 
+    normalizeLiteOutputs() {
+        // Older serialized versions of this node may still contain obsolete output slots.
+        // Lite must expose exactly: width, height, latent.
+        if (!Array.isArray(this.node.outputs)) return;
+        const desiredTypes = ["INT", "INT", "LATENT"];
+        this.node.outputs = this.node.outputs.slice(0, 3);
+        this.node.outputs.forEach((output, index) => {
+            output.type = desiredTypes[index] || output.type;
+            output.hidden = false;
+            output.name = output.localized_name = "";
+        });
+    },
+
     applyCompactSlotLabels() {
         this.normalizeInputSlots();
         const isCompact = this.collapsedSections?.extraControls || false;
@@ -1169,8 +1160,9 @@ export const nodeLifecycleMethods = {
         const self = this;
         node.resolutionMaster = this;
         this.installCanvasDragZoomBypass();
-        node.size = [330, 400];
-        node.min_size = [330, 200];
+        node.size = [330, 380];
+        node.min_size = [330, 230];
+        this.normalizeLiteOutputs();
         this.applyCompactSlotLabels();
         this.installVueNodesCompatibilityWidget();
         if (node.outputs) {
@@ -1299,6 +1291,8 @@ export const nodeLifecycleMethods = {
         const origOnConfigure = node.onConfigure;
         node.onConfigure = function() {
             const result = origOnConfigure?.apply(this, arguments);
+            self.normalizeLiteOutputs();
+            self.applyCompactSlotLabels();
             self.prepareAutoDetectWorkflowRestore();
             return result;
         };
@@ -1365,6 +1359,7 @@ export const nodeLifecycleMethods = {
                     extraControls: this.properties.section_extraControls_collapsed
                 };
                 self.userPreferredHeight = self.getStoredPreferredHeight();
+                self.normalizeLiteOutputs();
                 self.applyCompactSlotLabels();
 
                 // Update internal position from saved properties.

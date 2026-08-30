@@ -5,8 +5,8 @@ import { performanceDiagnostics } from "../utils/performance_diagnostics.js";
 import { getModelInfoMessage } from "../calculations/model_profiles.js";
 
 const log = createModuleLogger("resolution_master_draw_methods");
-const OUTPUT_VALUE_VISUAL_RIGHT_INSET = 3;
-const OUTPUT_VALUE_HIT_RIGHT_INSET = 12;
+const OUTPUT_VALUE_VISUAL_RIGHT_INSET = 28;
+const OUTPUT_VALUE_HIT_RIGHT_INSET = 36;
 const OUTPUT_VALUE_VERTICAL_GAP = 4;
 const OUTPUT_VALUE_CANVAS_TOP_INSET = 1;
 const SECTION_BACKGROUND_COLOR = "rgba(0,0,0,0.2)";
@@ -37,23 +37,6 @@ export const drawingMethods = {
                     currentY += sectionInfo.totalHeight + spacing;
                 };
 
-                const canvasHeight = this.getManualCanvasHeight(currentY);
-                const canvasPadding = this.collapsedSections.extraControls ? 8 : 20;
-                this.draw2DCanvas(ctx, margin, currentY, node.size[0] - margin * 2, canvasHeight, canvasPadding);
-                currentY += canvasHeight + this.getCanvasInfoGap();
-
-                const canvasInfoY = this.lastCanvasBounds
-                    ? this.lastCanvasBounds.y + this.lastCanvasBounds.h + 18
-                    : currentY;
-                const maxVueInfoY = node.size[1]
-                    - this.getVueCompatBottomOverlayClearance()
-                    - this.getManualBottomPadding();
-                const infoY = this.isVueNodesMode() && this.collapsedSections.extraControls
-                    ? Math.min(canvasInfoY, maxVueInfoY)
-                    : canvasInfoY;
-                this.drawInfoText(ctx, infoY);
-                currentY += 15 + spacing;
-
                 if (this.collapsedSections.extraControls) {
                 } else {
                     collapsibleSection("Actions", "actions", (ctx, y, preview) => {
@@ -64,11 +47,6 @@ export const drawingMethods = {
                     collapsibleSection("Scaling", "scaling", (ctx, y, preview) => {
                         if (!preview) return this.drawScalingGrid(ctx, y);
                         return 130;
-                    });
-
-                    collapsibleSection("Auto-Detect", "autoDetect", (ctx, y, preview) => {
-                        if (!preview) return this.drawAutoDetectSection(ctx, y);
-                        return 110;
                     });
 
                     collapsibleSection("Presets", "presets", (ctx, y, preview) => {
@@ -149,21 +127,19 @@ export const drawingMethods = {
     },
 
     drawCompactToggleButton(ctx) {
+        // Lite build: keep only the help button. The compact/minimize (-/+) control is intentionally removed.
+        delete this.controls.compactToggleBtn;
         if (this.isVueNodesMode()) {
             delete this.controls.compactHelpBtn;
-            delete this.controls.compactToggleBtn;
             this.syncVueCompatHeaderControls?.();
             return;
         }
 
         this.teardownVueCompatHeaderControls?.();
-        const isActive = this.collapsedSections.extraControls || false;
         const buttonSize = 18;
-        const x = this.node.size[0] - buttonSize - 9;
+        const helpX = this.node.size[0] - buttonSize - 9;
         const y = -LiteGraph.NODE_TITLE_HEIGHT + 5;
-        const helpX = x - buttonSize - 6;
         this.controls.compactHelpBtn = { x: helpX, y, w: buttonSize, h: buttonSize };
-        this.controls.compactToggleBtn = { x, y, w: buttonSize, h: buttonSize };
 
         ctx.fillStyle = "rgba(255,255,255,0.08)";
         ctx.strokeStyle = this.hoverElement === 'compactHelpBtn'
@@ -180,45 +156,25 @@ export const drawingMethods = {
         ctx.textAlign = "center";
         ctx.textBaseline = "middle";
         ctx.fillText("?", helpX + buttonSize / 2, y + buttonSize / 2 + 0.5);
-
-        ctx.fillStyle = isActive ? "rgba(90, 170, 255, 0.45)" : "rgba(255,255,255,0.08)";
-        ctx.strokeStyle = this.hoverElement === 'compactToggleBtn'
-            ? "rgba(255,255,255,0.65)"
-            : isActive ? "rgba(120, 190, 255, 0.85)" : "rgba(255,255,255,0.25)";
-        ctx.lineWidth = 1;
-        ctx.beginPath();
-        ctx.roundRect(x, y, buttonSize, buttonSize, 5);
-        ctx.fill();
-        ctx.stroke();
-
-        const label = isActive ? "+" : "-";
-        ctx.fillStyle = this.hoverElement === 'compactToggleBtn' || isActive ? "#fff" : "#cfcfcf";
-        ctx.font = isActive ? "bold 13px Arial" : "bold 18px Arial";
-        ctx.textAlign = "center";
-        ctx.textBaseline = "alphabetic";
-        const metrics = ctx.measureText(label);
-        const minusOffsetY = isActive ? 0 : 0.4;
-        const textY = y + buttonSize / 2 - (metrics.actualBoundingBoxAscent + metrics.actualBoundingBoxDescent) / 2 + metrics.actualBoundingBoxAscent + minusOffsetY;
-        ctx.fillText(label, x + buttonSize / 2, textY);
     },
 
     drawOutputValues(ctx) {
         const node = this.node;
-        const props = node.properties;
 
         ctx.font = "bold 14px Arial";
         ctx.textAlign = "right";
         ctx.textBaseline = "middle";
 
-        if (this.widthWidget && this.heightWidget && this.batchSizeWidget) {
+        if (this.widthWidget && this.heightWidget) {
+            // Lite has only three visible outputs: width, height, latent.
             const classicSlotCenters = Array.from(
-                { length: 5 },
+                { length: 3 },
                 (_, index) => 5 + LiteGraph.NODE_SLOT_HEIGHT * (index + 0.5)
             );
             const vueSlotCenters = this.isVueNodesMode?.()
                 && !this._drawingVueCompatSecondarySurface
                 && this._vueCompatOutputSlotCenters?.length >= classicSlotCenters.length
-                ? this._vueCompatOutputSlotCenters
+                ? this._vueCompatOutputSlotCenters.slice(0, 3)
                 : null;
             const slotCenters = vueSlotCenters || classicSlotCenters;
             const slotSteps = slotCenters
@@ -229,57 +185,45 @@ export const drawingMethods = {
             const slotSpacing = slotSteps.length
                 ? slotSteps[Math.floor(slotSteps.length / 2)]
                 : LiteGraph.NODE_SLOT_HEIGHT;
-            const [y_offset_1, y_offset_2, y_offset_3, y_offset_4, y_offset_5] = slotCenters;
-            const valueAreaWidth = 60; 
+            const [yWidth, yHeight, yLatent] = slotCenters;
+            const valueAreaWidth = 60;
             const preferredValueAreaHeight = Math.max(14, slotSpacing - OUTPUT_VALUE_VERTICAL_GAP);
-            const availableFirstSlotHeight = Math.max(
-                8,
-                2 * (y_offset_1 - OUTPUT_VALUE_CANVAS_TOP_INSET)
-            );
+            const availableFirstSlotHeight = Math.max(8, 2 * (yWidth - OUTPUT_VALUE_CANVAS_TOP_INSET));
             const valueAreaHeight = Math.min(preferredValueAreaHeight, availableFirstSlotHeight);
             const outputValueRight = node.size[0] - OUTPUT_VALUE_VISUAL_RIGHT_INSET;
             const valueAreaX = outputValueRight - valueAreaWidth;
             const outputValueCenterX = valueAreaX + valueAreaWidth / 2;
-            this.drawOutputValueArea(ctx, 'widthValueArea', valueAreaX, y_offset_1 - valueAreaHeight/2,
-                valueAreaWidth, valueAreaHeight, this.widthWidget.value.toString(), y_offset_1,
-                [136, 153, 255], "#89F", "#89F");
-            this.drawOutputValueArea(ctx, 'heightValueArea', valueAreaX, y_offset_2 - valueAreaHeight/2,
-                valueAreaWidth, valueAreaHeight, this.heightWidget.value.toString(), y_offset_2,
-                [248, 136, 153], "#F89", "#F89");
-            ctx.fillStyle = "#9F8";
-            ctx.textAlign = "center";
-            this.drawVerticallyCenteredText(ctx, props.rescaleValue.toFixed(2), outputValueCenterX, y_offset_3);
-            this.drawOutputValueArea(ctx, 'batchSizeValueArea', valueAreaX, y_offset_4 - valueAreaHeight/2,
-                valueAreaWidth, valueAreaHeight, this.batchSizeWidget.value.toString(), y_offset_4,
-                [255, 136, 187], "#FAB", "#F8B");
 
-            // Create clickable area for LAT selector
+            this.drawOutputValueArea(ctx, 'widthValueArea', valueAreaX, yWidth - valueAreaHeight / 2,
+                valueAreaWidth, valueAreaHeight, this.widthWidget.value.toString(), yWidth,
+                [136, 153, 255], "#89F", "#89F");
+            this.drawOutputValueArea(ctx, 'heightValueArea', valueAreaX, yHeight - valueAreaHeight / 2,
+                valueAreaWidth, valueAreaHeight, this.heightWidget.value.toString(), yHeight,
+                [248, 136, 153], "#F89", "#F89");
+
+            // LAT selector. Batch size is fixed to 1 and rescale factor is internal only.
             const latAreaWidth = valueAreaWidth;
             const latAreaHeight = 28;
             const latAreaX = valueAreaX;
-
             this.controls.latValueArea = {
                 x: latAreaX,
-                y: y_offset_5 - 10,
+                y: yLatent - 10,
                 w: latAreaWidth - (OUTPUT_VALUE_HIT_RIGHT_INSET - OUTPUT_VALUE_VISUAL_RIGHT_INSET),
                 h: latAreaHeight
             };
-
-            this.drawEditableValueBackground(ctx, 'latValueArea', latAreaX, y_offset_5 - 10, latAreaWidth, latAreaHeight, [248, 136, 187]);
-
-            ctx.fillStyle = this.hoverElement === 'latValueArea' ? "#FAB" : "#F8B"; 
+            this.drawEditableValueBackground(ctx, 'latValueArea', latAreaX, yLatent - 10, latAreaWidth, latAreaHeight, [248, 136, 187]);
+            ctx.fillStyle = this.hoverElement === 'latValueArea' ? "#FAB" : "#F8B";
             ctx.font = "bold 12px Arial";
             ctx.textAlign = "center";
-            ctx.fillText("LAT", outputValueCenterX, y_offset_5);
+            ctx.fillText("LAT", outputValueCenterX, yLatent);
 
-            // Draw latent type info in smaller gray font below LAT
             if (this.latentTypeWidget) {
                 const latentType = this.latentTypeWidget.value || 'latent_4x8';
                 const shortType = String(latentType).replace('latent_', '');
-                ctx.fillStyle = this.hoverElement === 'latValueArea' ? "#999" : "#777"; 
+                ctx.fillStyle = this.hoverElement === 'latValueArea' ? "#999" : "#777";
                 ctx.font = "9px Arial";
                 ctx.textAlign = "center";
-                ctx.fillText(shortType, outputValueCenterX, y_offset_5 + 12);
+                ctx.fillText(shortType, outputValueCenterX, yLatent + 12);
             }
         }
     },

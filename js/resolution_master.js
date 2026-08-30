@@ -114,10 +114,10 @@ class ResolutionMasterCanvas {
 Object.assign(ResolutionMasterCanvas.prototype, nodeLifecycleMethods, canvasMethods, drawingMethods, calculationMethods, autoDetectMethods, interactionMethods);
 
 app.registerExtension({
-    name: "azResolutionMaster",
+    name: "azResolutionMasterLite",
     async beforeRegisterNodeDef(nodeType, nodeData, _app) {
-        if (nodeData.name === "ResolutionMaster") {
-            log.debug('Registering ResolutionMaster node extension');
+        if (nodeData.name === "ResolutionMasterLite") {
+            log.debug('Registering ResolutionMaster Lite node extension');
             const onNodeCreated = nodeType.prototype.onNodeCreated;
             nodeType.prototype.onNodeCreated = function() {
                 onNodeCreated?.apply(this, []);

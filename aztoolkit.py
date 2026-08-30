@@ -29,14 +29,14 @@ except ImportError:
 log = create_module_logger(__name__)
 
 
-class ResolutionMaster(io.ComfyNode):
+class ResolutionMasterLite(io.ComfyNode):
     @classmethod
     def define_schema(cls) -> io.Schema:
         return io.Schema(
-            node_id="ResolutionMaster",
-            display_name="Resolution Master",
+            node_id="ResolutionMasterLite",
+            display_name="Resolution Master Lite",
             category="utils/azToolkit",
-            description="Interactive resolution, scaling, preset, and latent-size helper with optional input-image auto-detection.",
+            description="Resolution Master Lite: presets, scaling, and latent-size helper without the free-form canvas or image input.",
             inputs=[
                 io.Combo.Input(
                     "mode",
@@ -69,15 +69,11 @@ class ResolutionMaster(io.ComfyNode):
                 io.String.Input("auto_detect_presets_json", default="{}", tooltip="Technical preset data used by auto-detect."),
                 io.String.Input("rescale_mode", default="resolution", tooltip="Scaling mode used for the Rescale Factor output."),
                 io.Float.Input("rescale_value", default=1.0, step=0.001, min=0.0, max=100.0, tooltip="Current Rescale Factor value shown by the interface."),
-                io.Int.Input("batch_size", default=1, min=1, max=4096, tooltip="How many latent images to create in one batch."),
-                io.Image.Input("input_image", optional=True, tooltip="Optional image used for auto-detecting width and height."),
             ],
             outputs=[
                 io.Int.Output("width", tooltip="Final output width in pixels."),
                 io.Int.Output("height", tooltip="Final output height in pixels."),
-                io.Float.Output("rescale_factor", tooltip="Scale factor calculated from the selected scaling mode."),
-                io.Int.Output("batch_size", tooltip="Number of latent images created in one batch."),
-                io.Latent.Output("latent", tooltip="Empty latent created with the selected size, batch size, and latent type."),
+                io.Latent.Output("latent", tooltip="Empty latent created with the selected size and latent type. Batch size is fixed to 1."),
             ],
             hidden=[io.Hidden.unique_id, io.Hidden.prompt],
         )
@@ -138,12 +134,11 @@ class ResolutionMaster(io.ComfyNode):
         auto_detect_presets_json,
         rescale_mode,
         rescale_value,
-        batch_size=1,
-        input_image=None,
     ) -> io.NodeOutput:
         unique_id = cls.hidden.unique_id
         prompt = cls.hidden.prompt
         device = comfy.model_management.intermediate_device()
+        batch_size = 1  # Resolution Master Lite intentionally fixes batch size to one.
 
         log.debug(
             "Executing",
@@ -161,62 +156,9 @@ class ResolutionMaster(io.ComfyNode):
             auto_detect,
         )
 
-        frontend_source_empty = auto_detect_source == "frontend-empty"
-        local_image_gallery_empty = cls.is_empty_local_image_gallery_input(prompt, unique_id)
-
-        if auto_detect and (frontend_source_empty or local_image_gallery_empty):
-            log.debug(
-                "Skipping backend auto-detect fallback because frontend source has no active selection",
-                "frontend_source_empty=",
-                frontend_source_empty,
-                "local_image_gallery_empty=",
-                local_image_gallery_empty,
-            )
-        elif auto_detect and input_image is not None:
-            detected_dimensions = cls.detect_image_dimensions(input_image)
-            if detected_dimensions is not None:
-                detected_width, detected_height = detected_dimensions
-                store_detected_dimensions(unique_id, detected_width, detected_height)
-                log.debug(
-                    "Detected input dimensions",
-                    detected_width,
-                    "x",
-                    detected_height,
-                    "unique_id=",
-                    unique_id,
-                )
-
-                frontend_matches_tensor = (
-                    auto_detect_source == "frontend"
-                    and safe_int(auto_detect_width) == detected_width
-                    and safe_int(auto_detect_height) == detected_height
-                )
-
-                if not frontend_matches_tensor:
-                    previous_width, previous_height = width, height
-                    width, height = apply_backend_auto_detect_fallback(
-                        detected_width,
-                        detected_height,
-                        auto_fit_on_change,
-                        auto_resize_on_change,
-                        auto_snap_on_change,
-                        smart_fit,
-                        use_custom_calc,
-                        preserve_scaling_ratio,
-                        selected_category,
-                        safe_int(snap_value, 64),
-                        safe_float(upscale_value, 1.0),
-                        safe_int(target_resolution, 1080),
-                        safe_float(target_megapixels, 2.0),
-                        rescale_mode,
-                        auto_detect_presets_json,
-                    )
-                    log.info(
-                        "Applied backend auto-detect fallback",
-                        f"{previous_width}x{previous_height}",
-                        "->",
-                        f"{width}x{height}",
-                    )
+        # Auto-detect input-image support intentionally removed in this custom build.
+        # The hidden compatibility settings remain so existing Resolution Master workflows
+        # can still deserialize without breaking.
 
         rescale_factor = calculate_rescale_factor(
             width,
@@ -243,8 +185,7 @@ class ResolutionMaster(io.ComfyNode):
             "batch_size=",
             batch_size,
         )
-        return io.NodeOutput(width, height, rescale_factor, batch_size, {"samples": latent})
+        return io.NodeOutput(width, height, {"samples": latent})
 
 
-register_dimension_routes()
 register_calculation_routes()

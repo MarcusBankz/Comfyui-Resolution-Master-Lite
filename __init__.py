@@ -1,15 +1,15 @@
 from comfy_api.latest import ComfyExtension, io
 
-from .aztoolkit import ResolutionMaster
+from .aztoolkit import ResolutionMasterLite
 
 
-class ResolutionMasterExtension(ComfyExtension):
+class ResolutionMasterLiteExtension(ComfyExtension):
     async def get_node_list(self) -> list[type[io.ComfyNode]]:
-        return [ResolutionMaster]
+        return [ResolutionMasterLite]
 
 
-async def comfy_entrypoint() -> ResolutionMasterExtension:
-    return ResolutionMasterExtension()
+async def comfy_entrypoint() -> ResolutionMasterLiteExtension:
+    return ResolutionMasterLiteExtension()
 
 WEB_DIRECTORY = "./js"
 

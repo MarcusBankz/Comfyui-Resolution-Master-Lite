@@ -69,7 +69,7 @@ export const calculationMethods = {
                 selectedCategory: payload.selected_category,
                 rescaleMode: payload.rescale_mode
             });
-            const response = await fetch('/resolutionmaster/calculate', {
+            const response = await fetch('/resolutionmasterlite/calculate', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(payload),
