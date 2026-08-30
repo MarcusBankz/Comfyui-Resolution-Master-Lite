@@ -1,0 +1,160 @@
+/**
+ * Preset List View Styles
+ * Renders the preset list view with categories and presets
+ * Note: Design tokens are defined in design-tokens.css
+ * Shared styles (edit category button, preset items, cards) are in shared-components.css
+ */
+
+/* Stats Header */
+.resolution-master-preset-list-stats {
+    background: var(--bg-primary-10);
+    border: 1px solid var(--bg-primary-30);
+    border-radius: var(--radius-lg);
+    padding: var(--spacing-12);
+    margin-bottom: var(--spacing-20);
+    color: var(--color-primary);
+    font-size: var(--font-base);
+}
+
+/* Empty State */
+.resolution-master-preset-list-empty {
+    text-align: center;
+    padding: 40px var(--spacing-20);
+    color: var(--color-gray-500);
+}
+
+.resolution-master-preset-list-empty-icon {
+    font-size: 48px;
+    margin-bottom: var(--spacing-16);
+}
+
+.resolution-master-preset-list-empty-title {
+    font-size: var(--font-xl);
+    margin-bottom: var(--spacing-8);
+}
+
+.resolution-master-preset-list-empty-subtitle {
+    font-size: var(--font-base);
+}
+
+/* Category Section */
+.resolution-master-preset-list-category-section {
+    padding-bottom: var(--spacing-24);
+}
+
+/* Category Header */
+.resolution-master-preset-list-category-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: var(--spacing-12);
+    padding-bottom: var(--spacing-8);
+    border-bottom: 1px solid var(--color-gray-800);
+    cursor: move;
+    transition: var(--transition-all);
+}
+
+.resolution-master-preset-list-category-header.dragging {
+    opacity: 0.5;
+}
+
+/* Category Title */
+.resolution-master-preset-list-category-title {
+    display: flex;
+    align-items: center;
+    flex-wrap: nowrap;
+    color: var(--color-primary);
+    font-size: var(--font-lg);
+    font-weight: bold;
+    user-select: none;
+    flex: 1;
+}
+
+.resolution-master-preset-list-category-icon {
+    margin-left: var(--spacing-6);
+    vertical-align: middle;
+}
+
+/* Preset Item - Dragging State */
+.resolution-master-preset-list-item.dragging {
+    opacity: 0.5;
+}
+
+/* Bulk Delete Checkbox */
+.resolution-master-preset-list-checkbox {
+    width: var(--spacing-16);
+    height: var(--spacing-16);
+    cursor: pointer;
+    margin-right: var(--spacing-8);
+}
+
+/* Keyboard focus accessibility for checkbox */
+.resolution-master-preset-list-checkbox:focus-visible {
+    outline: 2px solid var(--color-primary);
+    outline-offset: 2px;
+}
+
+/* Preset Info */
+.resolution-master-preset-list-info {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-6);
+}
+
+.resolution-master-preset-list-name-container {
+    color: var(--color-white);
+    font-size: var(--font-base);
+}
+
+.resolution-master-preset-list-name {
+    cursor: pointer;
+    user-select: none;
+}
+
+.resolution-master-preset-list-dims {
+    color: var(--color-gray-500);
+    font-size: var(--font-md);
+}
+
+/* Clone Handle */
+.resolution-master-preset-list-clone-handle {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 24px;
+    height: 24px;
+    background: var(--overlay-light-10);
+    border: 1px solid var(--color-gray-600);
+    border-radius: 4px;
+    color: var(--color-gray-100);
+    font-size: 16px;
+    font-weight: bold;
+    cursor: grab;
+    user-select: none;
+    transition: all 0.2s ease;
+    flex-shrink: 0;
+}
+
+.resolution-master-preset-list-clone-handle:hover {
+    background: var(--overlay-light-20);
+    border-color: var(--color-gray-500);
+    transform: scale(1.1);
+}
+
+.resolution-master-preset-list-clone-handle:active {
+    cursor: grabbing;
+    transform: scale(0.95);
+}
+
+/* Action Buttons */
+.resolution-master-preset-list-actions {
+    display: flex;
+    gap: var(--spacing-3);
+}
+
+/* Keyboard focus accessibility for action buttons */
+.resolution-master-preset-list-actions button:focus-visible {
+    outline: 2px solid var(--color-primary);
+    outline-offset: 2px;
+}

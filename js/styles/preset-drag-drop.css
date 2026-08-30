@@ -1,0 +1,58 @@
+/**
+ * Preset Drag & Drop Styles
+ * Visual indicators for drag & drop operations using cascade patterns
+ * Note: Design tokens are defined in design-tokens.css
+ */
+
+/* ===== BASE STYLES - Using attribute selector for automatic inheritance ===== */
+/* All drag-drop-indicator classes automatically get no transition */
+[class^="resolution-master-drag-drop-indicator-"],
+[class*=" resolution-master-drag-drop-indicator-"] {
+    transition: none;
+}
+
+/* ===== REORDER INDICATORS (Blue) ===== */
+/* Standard reorder within same category */
+.resolution-master-drag-drop-indicator-top {
+    box-shadow: inset 0 2px 0 0 var(--drag-color-reorder);
+}
+
+.resolution-master-drag-drop-indicator-bottom {
+    box-shadow: inset 0 -2px 0 0 var(--drag-color-reorder);
+}
+
+/* ===== MOVE INDICATORS (Orange) ===== */
+/* Move to different category */
+.resolution-master-drag-drop-indicator-top-move {
+    box-shadow: inset 0 2px 0 0 var(--drag-color-move);
+}
+
+.resolution-master-drag-drop-indicator-bottom-move {
+    box-shadow: inset 0 -2px 0 0 var(--drag-color-move);
+}
+
+/* ===== ERROR INDICATORS (Red) ===== */
+/* Conflict or invalid drop */
+.resolution-master-drag-drop-indicator-top-error {
+    box-shadow: inset 0 2px 0 0 var(--drag-color-error);
+}
+
+.resolution-master-drag-drop-indicator-bottom-error {
+    box-shadow: inset 0 -2px 0 0 var(--drag-color-error);
+}
+
+/* ===== CLONE INDICATORS (Green) ===== */
+/* Duplicate/copy operation */
+.resolution-master-drag-drop-indicator-top-clone {
+    box-shadow: inset 0 2px 0 0 var(--drag-color-clone);
+}
+
+.resolution-master-drag-drop-indicator-bottom-clone {
+    box-shadow: inset 0 -2px 0 0 var(--drag-color-clone);
+}
+
+/* ===== CLEAR INDICATOR ===== */
+/* Remove all visual indicators */
+.resolution-master-drag-drop-no-indicator {
+    box-shadow: none;
+}

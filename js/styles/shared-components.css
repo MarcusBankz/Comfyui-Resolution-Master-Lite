@@ -1,0 +1,511 @@
+/**
+ * Shared Components
+ * Shared styles using cascade and descendant selectors
+ * Eliminates repetitions across component-specific CSS files
+ * Note: Design tokens are defined in design-tokens.css
+ */
+
+
+/* ========================================
+   DIALOG OVERLAYS
+   ======================================== */
+
+/* All dialog overlays share the same pattern */
+.resolution-master-preset-manager-overlay,
+.resolution-master-json-editor-overlay,
+.resolution-master-rename-dialog-overlay,
+.resolution-master-searchable-dropdown-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: var(--z-dropdown);
+}
+
+/* Specific overlay backgrounds */
+.resolution-master-preset-manager-overlay,
+.resolution-master-json-editor-overlay {
+    background: var(--overlay-dark-70);
+}
+
+.resolution-master-rename-dialog-overlay {
+    background: var(--overlay-dark-50);
+}
+
+.resolution-master-searchable-dropdown-overlay {
+    background: transparent;
+}
+
+/* ========================================
+   DIALOG CONTAINERS
+   ======================================== */
+
+/* Base dialog structure - applies to all dialogs */
+.resolution-master-preset-manager-dialog,
+.resolution-master-json-editor-dialog,
+.resolution-master-rename-dialog,
+.resolution-master-searchable-dropdown {
+    position: fixed;
+    background: var(--gradient-dark);
+    border: 2px solid var(--color-gray-700);
+    border-radius: var(--radius-2xl);
+    box-shadow: var(--shadow-lg);
+    z-index: var(--z-dialog);
+    font-family: Arial, sans-serif;
+}
+
+/* Centered dialogs */
+.resolution-master-preset-manager-dialog,
+.resolution-master-json-editor-dialog,
+.resolution-master-rename-dialog {
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+/* ========================================
+   DIALOG HEADERS
+   ======================================== */
+
+/* All dialog headers share the same layout */
+.resolution-master-preset-manager-header,
+.resolution-master-json-editor-header,
+.resolution-master-searchable-dropdown-title-container {
+    padding: var(--spacing-16) var(--spacing-20);
+    border-bottom: 2px solid var(--color-gray-800);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+/* Searchable dropdown has smaller padding */
+.resolution-master-searchable-dropdown-title-container {
+    padding: var(--spacing-8) var(--spacing-12) var(--spacing-6) var(--spacing-12);
+    border-bottom: 1px solid var(--color-gray-800);
+}
+
+/* ========================================
+   DIALOG TITLES
+   ======================================== */
+
+.resolution-master-preset-manager-title,
+.resolution-master-json-editor-title {
+    color: var(--color-white);
+    font-size: var(--font-2xl);
+    font-weight: bold;
+}
+
+.resolution-master-rename-dialog-title {
+    color: var(--color-white);
+    font-size: var(--font-xl);
+    font-weight: bold;
+    margin-bottom: 15px;
+    text-align: center;
+}
+
+.resolution-master-searchable-dropdown-title {
+    color: var(--color-white);
+    font-size: var(--font-base);
+    font-weight: bold;
+}
+
+/* ========================================
+   CLOSE BUTTONS
+   ======================================== */
+
+/* All close buttons share identical styles */
+.resolution-master-preset-manager-close-btn,
+.resolution-master-json-editor-close-btn,
+.resolution-master-searchable-dropdown-close-btn {
+    background: transparent;
+    border: none;
+    color: var(--color-gray-300);
+    cursor: pointer;
+    padding: 0;
+    transition: var(--transition-all);
+}
+
+/* Keyboard focus accessibility - visible focus indicator */
+.resolution-master-preset-manager-close-btn:focus-visible,
+.resolution-master-json-editor-close-btn:focus-visible,
+.resolution-master-searchable-dropdown-close-btn:focus-visible {
+    outline: 2px solid var(--color-primary);
+    outline-offset: 2px;
+}
+
+/* Large close buttons (dialogs) */
+.resolution-master-preset-manager-close-btn,
+.resolution-master-json-editor-close-btn {
+    font-size: var(--font-4xl);
+    width: var(--spacing-32);
+    height: var(--spacing-32);
+    line-height: var(--spacing-32);
+    text-align: center;
+    border-radius: var(--radius-md);
+}
+
+/* Small close button (dropdown) */
+.resolution-master-searchable-dropdown-close-btn {
+    font-size: var(--font-3xl);
+    font-weight: bold;
+    width: var(--spacing-20);
+    height: var(--spacing-20);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Close button hover states */
+.resolution-master-preset-manager-close-btn:hover,
+.resolution-master-json-editor-close-btn:hover {
+    background: var(--overlay-light-10);
+    color: var(--color-white);
+}
+
+.resolution-master-searchable-dropdown-close-btn:hover {
+    color: var(--color-white);
+}
+
+/* ========================================
+   DIALOG FOOTERS
+   ======================================== */
+
+/* All dialog footers share the same layout */
+.resolution-master-preset-manager-footer,
+.resolution-master-json-editor-footer {
+    padding: var(--spacing-16) var(--spacing-20);
+    border-top: 2px solid var(--color-gray-800);
+    display: flex;
+    gap: var(--spacing-12);
+    justify-content: space-between;
+}
+
+/* ========================================
+   BUTTONS - Base Styles
+   ======================================== */
+
+/* All footer buttons share base styles */
+.resolution-master-preset-manager-footer button,
+.resolution-master-json-editor-footer button,
+.resolution-master-rename-dialog-buttons button {
+    padding: var(--spacing-10) var(--spacing-20);
+    border: none;
+    border-radius: var(--radius-lg);
+    font-size: var(--font-lg);
+    font-weight: bold;
+    cursor: pointer;
+    transition: var(--transition-all);
+}
+
+/* Smaller buttons */
+.resolution-master-rename-dialog-buttons button {
+    padding: var(--spacing-8) var(--spacing-16);
+    font-size: var(--font-md);
+}
+
+/* ========================================
+   BUTTONS - Primary Variant
+   ======================================== */
+
+/* Primary buttons (Apply, Save, etc.) */
+.resolution-master-json-editor-apply-btn,
+.resolution-master-rename-dialog-apply-btn,
+.resolution-master-preset-ui-footer-btn-primary {
+    background: var(--color-primary);
+    color: var(--color-black);
+}
+
+.resolution-master-json-editor-apply-btn:hover:not(:disabled),
+.resolution-master-rename-dialog-apply-btn:hover:not(:disabled),
+.resolution-master-preset-ui-footer-btn-primary:hover {
+    background: var(--color-primary-light);
+}
+
+.resolution-master-rename-dialog-apply-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+/* ========================================
+   BUTTONS - Secondary Variant
+   ======================================== */
+
+/* Secondary buttons (Cancel, Format, etc.) */
+.resolution-master-json-editor-format-btn,
+.resolution-master-json-editor-cancel-btn,
+.resolution-master-rename-dialog-cancel-btn,
+.resolution-master-preset-ui-footer-btn-secondary {
+    background: var(--overlay-light-10);
+    border: 1px solid var(--color-gray-600);
+    color: var(--color-gray-100);
+}
+
+.resolution-master-json-editor-format-btn:hover,
+.resolution-master-json-editor-cancel-btn:hover,
+.resolution-master-rename-dialog-cancel-btn:hover,
+.resolution-master-preset-ui-footer-btn-secondary:hover {
+    background: var(--overlay-light-15);
+}
+
+/* Specific secondary button variants */
+.resolution-master-rename-dialog-cancel-btn {
+    border-color: var(--color-gray-700);
+    background: var(--color-gray-800);
+    color: var(--color-gray-200);
+}
+
+.resolution-master-rename-dialog-cancel-btn:hover {
+    background: var(--color-gray-700);
+}
+
+/* ========================================
+   FORM ELEMENTS - Inputs
+   ======================================== */
+
+/* All text inputs share common styles */
+.resolution-master-preset-add-form-input,
+.resolution-master-preset-ui-form-input,
+.resolution-master-rename-dialog-input,
+.resolution-master-searchable-dropdown-search {
+    padding: var(--spacing-8) var(--spacing-12);
+    border: 1px solid var(--color-gray-700);
+    border-radius: var(--radius-md);
+    background: var(--color-gray-900);
+    color: var(--color-white);
+    font-size: var(--font-base);
+}
+
+/* Keyboard focus accessibility for inputs */
+.resolution-master-preset-add-form-input:focus-visible,
+.resolution-master-preset-ui-form-input:focus-visible,
+.resolution-master-rename-dialog-input:focus-visible,
+.resolution-master-searchable-dropdown-search:focus-visible {
+    outline: 2px solid var(--color-primary);
+    outline-offset: 1px;
+    border-color: var(--color-primary);
+}
+
+/* Specific input sizes */
+.resolution-master-preset-add-form-input {
+    padding: var(--spacing-6);
+}
+
+.resolution-master-preset-ui-form-input {
+    padding: var(--spacing-10) var(--spacing-12);
+    border-radius: var(--radius-lg);
+    font-size: var(--font-lg);
+}
+
+.resolution-master-rename-dialog-input {
+    width: 100%;
+    font-size: var(--font-lg);
+}
+
+.resolution-master-searchable-dropdown-search {
+    width: 100%;
+    border: none;
+    border-bottom: 1px solid var(--color-gray-800);
+}
+
+/* Input focus states */
+.resolution-master-preset-ui-form-input:focus {
+    border-color: var(--color-primary);
+}
+
+/* Input error state */
+.resolution-master-preset-add-form-input.error {
+    border-color: var(--color-error-light);
+}
+
+/* ========================================
+   FORM ELEMENTS - Labels
+   ======================================== */
+
+/* All form labels share common styles */
+.resolution-master-preset-add-form-label,
+.resolution-master-preset-ui-form-label,
+.resolution-master-rename-dialog-label {
+    color: var(--color-gray-200);
+    font-weight: bold;
+}
+
+.resolution-master-preset-add-form-label {
+    font-size: var(--font-sm);
+}
+
+.resolution-master-preset-ui-form-label,
+.resolution-master-preset-add-category-label {
+    font-size: var(--font-base);
+}
+
+.resolution-master-rename-dialog-label {
+    font-size: var(--font-md);
+    display: block;
+    margin-bottom: var(--spacing-5);
+}
+
+/* ========================================
+   VALIDATION MESSAGES
+   ======================================== */
+
+/* All validation/error messages share common styles */
+.resolution-master-preset-add-form-error,
+.resolution-master-preset-add-validation,
+.resolution-master-rename-dialog-validation,
+.resolution-master-json-editor-validation {
+    color: var(--color-error-light);
+    font-size: var(--font-sm);
+}
+
+.resolution-master-preset-add-form-error {
+    margin-top: var(--spacing-2);
+    min-height: 14px;
+}
+
+.resolution-master-preset-add-validation {
+    font-size: var(--font-md);
+    margin-top: var(--spacing-4);
+    margin-bottom: var(--spacing-8);
+    min-height: 14px;
+}
+
+.resolution-master-rename-dialog-validation {
+    margin-bottom: var(--spacing-10);
+    min-height: 15px;
+}
+
+.resolution-master-json-editor-validation {
+    padding: 0 var(--spacing-20) var(--spacing-10) var(--spacing-20);
+    font-size: var(--font-md);
+    min-height: 18px;
+    user-select: text;
+    cursor: text;
+}
+
+/* Valid state for JSON editor */
+.resolution-master-json-editor-validation.valid {
+    color: var(--color-success);
+}
+
+/* ========================================
+   ACTION BUTTONS
+   ======================================== */
+
+/* Small action buttons (edit, delete, etc.) */
+.resolution-master-preset-list-edit-category-btn,
+.resolution-master-preset-ui-action-btn {
+    background: var(--bg-primary-10);
+    border: 1px solid var(--bg-primary-30);
+    border-radius: var(--radius-md);
+    color: var(--color-primary);
+    cursor: pointer;
+    padding: var(--spacing-4) var(--spacing-8);
+    font-size: var(--font-lg);
+    transition: var(--transition-all);
+}
+
+.resolution-master-preset-list-edit-category-btn:hover,
+.resolution-master-preset-ui-action-btn:hover {
+    background: var(--bg-primary-20);
+    border-color: var(--bg-primary-50);
+}
+
+/* More generic action button variant */
+.resolution-master-preset-ui-action-btn {
+    background: var(--overlay-light-10);
+    border-color: var(--color-gray-600);
+    border-radius: var(--radius-sm);
+    color: var(--color-gray-100);
+    padding: var(--spacing-3) var(--spacing-6);
+    font-size: var(--font-base);
+    transition: all 0.2s ease;
+}
+
+.resolution-master-preset-ui-action-btn:hover {
+    background: var(--overlay-light-20);
+    border-color: var(--color-gray-500);
+    transform: scale(1.1);
+}
+
+.resolution-master-preset-ui-action-btn:active {
+    transform: scale(0.95);
+}
+
+/* Square action buttons in preset list (Edit, Delete) - match clone handle size */
+.resolution-master-preset-list-actions .resolution-master-preset-ui-action-btn {
+    width: 24px;
+    height: 24px;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* ========================================
+   CARD COMPONENTS
+   ======================================== */
+
+/* Preset cards and items */
+.resolution-master-preset-list-item,
+.resolution-master-preset-ui-card {
+    background: var(--overlay-light-05);
+    border: 1px solid var(--color-gray-800);
+    border-radius: var(--radius-md);
+    padding: var(--spacing-8);
+    transition: var(--transition-all);
+    cursor: pointer;
+}
+
+.resolution-master-preset-list-item:hover,
+.resolution-master-preset-ui-card:hover {
+    background: var(--overlay-light-08);
+    border-color: var(--color-gray-600);
+}
+
+/* Specific styling for preset list items */
+.resolution-master-preset-list-item {
+    padding: var(--spacing-4) var(--spacing-8);
+    margin-bottom: var(--spacing-2);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    cursor: move;
+}
+
+.resolution-master-preset-ui-card:hover {
+    background: var(--overlay-light-10);
+}
+
+/* ========================================
+   INLINE RENAME INPUTS
+   ======================================== */
+
+/* Inline rename inputs share common styles */
+.resolution-master-rename-inline-category-input,
+.resolution-master-rename-inline-preset-input {
+    background: var(--color-gray-900);
+    border: 2px solid var(--color-primary);
+    border-radius: var(--radius-md);
+    padding: var(--spacing-2) var(--spacing-6);
+    font-weight: bold;
+}
+
+/* Keyboard focus accessibility for inline inputs */
+.resolution-master-rename-inline-category-input:focus-visible,
+.resolution-master-rename-inline-preset-input:focus-visible {
+    outline: 2px solid var(--color-primary-light);
+    outline-offset: 2px;
+}
+
+.resolution-master-rename-inline-category-input {
+    color: var(--color-primary);
+    font-size: var(--font-lg);
+    width: var(--width-input-inline-md);
+}
+
+.resolution-master-rename-inline-preset-input {
+    color: var(--color-white);
+    font-size: var(--font-base);
+    width: var(--width-input-inline-sm);
+}

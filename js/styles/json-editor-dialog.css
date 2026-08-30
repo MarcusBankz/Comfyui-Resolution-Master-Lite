@@ -1,0 +1,203 @@
+/**
+ * JSON Editor Dialog Styles
+ * JSON editor with syntax highlighting and Undo/Redo
+ * Note: Design tokens are defined in design-tokens.css
+ * Shared styles (overlay, dialog, header, title, close button, footer, buttons, validation) are in shared-components.css
+ */
+
+/* Dialog Container - Component-specific sizing */
+.resolution-master-json-editor-dialog {
+    inset: 0;
+    width: 100vw;
+    height: 100vh;
+    height: 100dvh;
+    box-sizing: border-box;
+    border: none;
+    border-radius: 0;
+    transform: none;
+    display: flex;
+    flex-direction: column;
+    z-index: var(--z-json-editor);
+}
+
+/* Overlay - Component-specific z-index */
+.resolution-master-json-editor-overlay {
+    z-index: var(--z-rename-dialog);
+}
+
+/* Info Message */
+.resolution-master-json-editor-info {
+    background: var(--bg-primary-10);
+    border-bottom: 1px solid var(--bg-primary-30);
+    color: var(--color-primary);
+    font-size: var(--font-md);
+}
+
+.resolution-master-json-editor-info-summary {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-8);
+    padding: var(--spacing-6) var(--spacing-20);
+    cursor: pointer;
+    list-style: none;
+    user-select: none;
+}
+
+.resolution-master-json-editor-info-summary::-webkit-details-marker {
+    display: none;
+}
+
+.resolution-master-json-editor-info-summary::before {
+    content: '▶';
+    font-size: var(--font-sm);
+    transition: transform 0.15s ease;
+}
+
+.resolution-master-json-editor-info[open] > .resolution-master-json-editor-info-summary::before {
+    transform: rotate(90deg);
+}
+
+.resolution-master-json-editor-info-summary::after {
+    content: 'Show instructions';
+    margin-left: auto;
+    color: var(--color-gray-300);
+    font-size: var(--font-sm);
+}
+
+.resolution-master-json-editor-info[open] > .resolution-master-json-editor-info-summary::after {
+    content: 'Hide instructions';
+}
+
+.resolution-master-json-editor-info-summary:hover {
+    background: var(--bg-primary-10);
+}
+
+.resolution-master-json-editor-info-summary:focus-visible {
+    outline: 2px solid var(--color-primary);
+    outline-offset: -2px;
+}
+
+.resolution-master-json-editor-info-content {
+    padding: var(--spacing-4) var(--spacing-20) var(--spacing-12);
+    border-top: 1px solid var(--bg-primary-30);
+    line-height: 1.5;
+}
+
+/* Content Area */
+.resolution-master-json-editor-content {
+    flex: 1;
+    min-height: 0;
+    padding: 0;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Editor Container */
+.resolution-master-json-editor-container {
+    flex: 1;
+    min-height: 0;
+    display: flex;
+    border: 1px solid var(--color-gray-700);
+    border-radius: 0;
+    overflow: hidden;
+    background: var(--color-bg-dark-3);
+    transition: all 0.2s ease;
+}
+
+.resolution-master-json-editor-container:focus-within {
+    border-color: var(--color-primary);
+}
+
+/* Drag and Drop States */
+.resolution-master-json-editor-container.drag-over {
+    border-color: var(--color-primary);
+    border-width: 2px;
+    background: rgba(var(--color-primary-rgb, 88, 166, 255), 0.05);
+    box-shadow: 0 0 20px rgba(var(--color-primary-rgb, 88, 166, 255), 0.3);
+}
+
+.resolution-master-json-editor-container.drag-over::before {
+    content: '📄 Drop JSON file here';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 18px;
+    color: var(--color-primary);
+    background: rgba(0, 0, 0, 0.8);
+    padding: 20px 40px;
+    border-radius: var(--radius-lg);
+    border: 2px dashed var(--color-primary);
+    pointer-events: none;
+    z-index: 1000;
+}
+
+/* Line Numbers */
+.resolution-master-json-editor-line-numbers {
+    padding: var(--spacing-12) var(--spacing-8) var(--spacing-12) var(--spacing-4);
+    background: var(--color-bg-dark-4);
+    color: var(--color-gray-600);
+    font-family: 'Courier New', monospace;
+    font-size: var(--font-base);
+    line-height: var(--line-height-normal);
+    text-align: right;
+    user-select: none;
+    border-right: 1px solid var(--color-gray-900);
+    overflow: hidden;
+    min-width: 50px;
+}
+
+.resolution-master-json-editor-line-number {
+    height: var(--line-height-editor);
+}
+
+/* Editor Wrapper */
+.resolution-master-json-editor-wrapper {
+    flex: 1;
+    overflow: auto;
+    position: relative;
+}
+
+/* Code Editor */
+.resolution-master-json-editor-pre {
+    margin: 0;
+    padding: var(--spacing-12);
+    background: transparent;
+    font-family: 'Courier New', monospace;
+    font-size: var(--font-base);
+    line-height: var(--line-height-normal);
+    overflow: visible;
+}
+
+.resolution-master-json-editor-code {
+    outline: none;
+    display: block;
+    white-space: pre;
+    color: var(--color-gray-100);
+}
+
+/* Keep validation text vertically centered with balanced spacing. */
+.resolution-master-json-editor-validation {
+    display: flex;
+    align-items: center;
+    box-sizing: border-box;
+    padding: var(--spacing-5) var(--spacing-20);
+}
+
+/* Validation States - border colors for container */
+.resolution-master-json-editor-container.valid {
+    color: var(--color-success);
+    border-color: var(--color-success);
+}
+
+.resolution-master-json-editor-container.invalid {
+    border-color: var(--color-error-light);
+}
+
+/* Footer Sections */
+.resolution-master-json-editor-footer-left,
+.resolution-master-json-editor-footer-right {
+    display: flex;
+    gap: var(--spacing-12);
+}

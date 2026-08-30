@@ -1,0 +1,388 @@
+/**
+ * Preset Editor View Styles
+ * Renders the add/edit preset view with forms and preview
+ * Note: Design tokens are defined in design-tokens.css
+ * Shared styles (form inputs, labels, validation, buttons) are in shared-components.css
+ */
+
+/* Title */
+.resolution-master-preset-add-title {
+    color: var(--color-white);
+    font-size: var(--font-xl);
+    font-weight: bold;
+    margin-bottom: var(--spacing-12);
+}
+
+/* Category Section */
+.resolution-master-preset-add-category-section {
+    margin-bottom: var(--spacing-12);
+}
+
+/* Category Section - Using cascade for children */
+.resolution-master-preset-add-category-section .resolution-master-preset-add-category-btn-container {
+    display: flex;
+    gap: var(--spacing-6);
+    align-items: center;
+}
+
+/* Category buttons - Base styles using cascade */
+.resolution-master-preset-add-category-section button {
+    padding: var(--spacing-8) var(--spacing-10);
+    border: 1px solid var(--color-gray-700);
+    border-radius: var(--radius-lg);
+    background: var(--color-gray-900);
+    font-size: var(--font-lg);
+    cursor: pointer;
+    transition: var(--transition-all);
+}
+
+/* Keyboard focus accessibility */
+.resolution-master-preset-add-category-section button:focus-visible {
+    outline: 2px solid var(--color-primary);
+    outline-offset: 2px;
+}
+
+.resolution-master-preset-add-category-section button:hover {
+    border-color: var(--color-primary);
+    background: var(--color-bg-hover);
+}
+
+/* Category select button - Component-specific */
+.resolution-master-preset-add-category-btn {
+    flex: 1;
+    color: var(--color-gray-500);
+    text-align: left;
+}
+
+.resolution-master-preset-add-category-btn.selected {
+    color: var(--color-white);
+}
+
+/* Rename category button - Component-specific */
+.resolution-master-preset-add-rename-category-btn {
+    padding: var(--spacing-8) var(--spacing-12);
+    color: var(--color-primary);
+}
+
+/* Quick Add Section - Using cascade for form elements */
+.resolution-master-preset-add-quick-section {
+    margin-bottom: var(--spacing-12);
+    padding: var(--spacing-10);
+    border: 1px solid var(--bg-primary-30);
+    border-radius: var(--radius-lg);
+    background: var(--bg-primary-10);
+}
+
+.resolution-master-preset-add-quick-section.edit-mode {
+    border-color: var(--bg-success-50);
+    background: var(--bg-success-10);
+}
+
+/* Quick section title - using cascade */
+.resolution-master-preset-add-quick-section .resolution-master-preset-add-quick-title {
+    font-size: var(--font-base);
+    font-weight: bold;
+    margin-bottom: var(--spacing-6);
+    color: var(--color-primary);
+}
+
+.resolution-master-preset-add-quick-section.edit-mode .resolution-master-preset-add-quick-title {
+    color: var(--color-success);
+}
+
+/* Form layout - using cascade */
+.resolution-master-preset-add-quick-section .resolution-master-preset-add-quick-form {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-4);
+}
+
+.resolution-master-preset-add-quick-section .resolution-master-preset-add-dimensions-row {
+    display: flex;
+    gap: var(--spacing-6);
+}
+
+.resolution-master-preset-add-quick-section .resolution-master-preset-add-dimension-group {
+    flex: 1;
+}
+
+/* Preview Container - Using cascade for children */
+.resolution-master-preset-add-preview-container {
+    margin-top: var(--spacing-6);
+    padding: var(--spacing-8);
+    background: var(--overlay-dark-20);
+    border: 1px solid var(--color-gray-800);
+    border-radius: var(--radius-md);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--spacing-6);
+}
+
+.resolution-master-preset-add-preview-container .resolution-master-preset-add-preview-label {
+    font-size: var(--font-sm);
+    font-weight: bold;
+    color: var(--color-primary);
+}
+
+.resolution-master-preset-add-preview-container .resolution-master-preset-add-preview-canvas {
+    width: 160px;
+    height: 120px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+}
+
+.resolution-master-preset-add-preview-container .resolution-master-preset-add-preview-shape {
+    border: 2px solid var(--color-primary);
+    background: var(--bg-primary-10);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    transition: var(--transition-all);
+}
+
+.resolution-master-preset-add-preview-container .resolution-master-preset-add-preview-shape.edit-mode {
+    border-color: var(--color-success);
+    background: var(--bg-success-10);
+}
+
+.resolution-master-preset-add-preview-container .resolution-master-preset-add-preview-text {
+    font-size: var(--font-sm);
+    font-weight: bold;
+    text-align: center;
+    line-height: 1.4;
+    color: var(--color-primary);
+}
+
+.resolution-master-preset-add-preview-container .resolution-master-preset-add-preview-ratio {
+    font-size: var(--font-xs);
+    color: var(--color-gray-500);
+}
+
+/* Edit mode text color - using cascade */
+.resolution-master-preset-add-preview-container.edit-mode .resolution-master-preset-add-preview-label,
+.resolution-master-preset-add-preview-container.edit-mode .resolution-master-preset-add-preview-text {
+    color: var(--color-success);
+}
+
+/* Button Container - Using cascade for buttons */
+.resolution-master-preset-add-button-container {
+    display: flex;
+    gap: var(--spacing-4);
+}
+
+/* All buttons in container share base styles */
+.resolution-master-preset-add-button-container button {
+    padding: var(--spacing-6) var(--spacing-12);
+    border-radius: var(--radius-md);
+    font-weight: bold;
+    cursor: pointer;
+    transition: var(--transition-all);
+}
+
+/* Keyboard focus accessibility for buttons */
+.resolution-master-preset-add-button-container button:focus-visible {
+    outline: 2px solid var(--color-primary);
+    outline-offset: 2px;
+}
+
+/* Add button (primary action) */
+.resolution-master-preset-add-button-container .resolution-master-preset-add-add-btn {
+    border: none;
+    background: var(--color-primary);
+    color: var(--color-black);
+}
+
+.resolution-master-preset-add-button-container .resolution-master-preset-add-add-btn.large {
+    font-size: var(--font-3xl);
+}
+
+.resolution-master-preset-add-button-container .resolution-master-preset-add-add-btn.normal {
+    font-size: var(--font-lg);
+}
+
+.resolution-master-preset-add-button-container .resolution-master-preset-add-add-btn:hover:not(:disabled) {
+    background: var(--color-primary-light);
+}
+
+.resolution-master-preset-add-button-container .resolution-master-preset-add-add-btn:disabled {
+    background: var(--color-gray-600);
+    color: var(--color-gray-400);
+    cursor: not-allowed;
+    opacity: 0.5;
+}
+
+/* Cancel button (secondary action) */
+.resolution-master-preset-add-button-container .resolution-master-preset-add-cancel-btn {
+    padding: var(--spacing-4) var(--spacing-12);
+    border: 1px solid var(--color-gray-600);
+    background: var(--overlay-light-10);
+    color: var(--color-gray-100);
+    font-size: var(--font-lg);
+}
+
+.resolution-master-preset-add-button-container .resolution-master-preset-add-cancel-btn:hover {
+    background: var(--overlay-light-20);
+    border-color: var(--color-gray-500);
+}
+
+/* Preset Preview Section - Using cascade */
+.resolution-master-preset-add-preset-preview {
+    margin-top: var(--spacing-12);
+    padding: var(--spacing-10);
+    background: var(--overlay-dark-20);
+    border: 1px solid var(--color-gray-800);
+    border-radius: var(--radius-lg);
+    max-height: 300px;
+    overflow-y: auto;
+}
+
+.resolution-master-preset-add-preset-preview .resolution-master-preset-add-preset-preview-title {
+    font-size: var(--font-base);
+    font-weight: bold;
+    margin-bottom: var(--spacing-8);
+    padding-bottom: var(--spacing-6);
+    border-bottom: 1px solid var(--color-gray-800);
+    color: var(--color-primary);
+}
+
+.resolution-master-preset-add-preset-preview .resolution-master-preset-add-presets-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: var(--spacing-8);
+}
+
+/* Ratio Column - Using cascade for children */
+.resolution-master-preset-add-ratio-column {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    flex: 0 0 auto;
+    background: var(--overlay-dark-20);
+    border: 1px solid var(--color-gray-800);
+    border-radius: var(--radius-md);
+    padding: var(--spacing-3);
+}
+
+.resolution-master-preset-add-ratio-column .resolution-master-preset-add-ratio-icon {
+    margin-bottom: var(--spacing-2);
+    color: var(--color-primary);
+}
+
+.resolution-master-preset-add-ratio-column .resolution-master-preset-add-ratio-text {
+    font-size: var(--font-base);
+    font-weight: bold;
+    margin-bottom: var(--spacing-3);
+    padding-bottom: var(--spacing-2);
+    border-bottom: 1px solid var(--color-gray-800);
+    width: 100%;
+    text-align: center;
+    color: var(--color-primary);
+}
+
+.resolution-master-preset-add-ratio-column .resolution-master-preset-add-ratio-list {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-2);
+    width: 100%;
+    max-height: 200px;
+    overflow-y: auto;
+    flex-shrink: 0;
+}
+
+/* Preset Item in Column - Using cascade */
+.resolution-master-preset-add-ratio-column .resolution-master-preset-add-preset-item {
+    padding: var(--spacing-3) var(--spacing-4);
+    background: var(--overlay-light-05);
+    border: 1px solid var(--color-gray-800);
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    transition: background var(--transition-normal), border-color var(--transition-normal);
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    height: 38px;
+    box-sizing: border-box;
+    overflow: hidden;
+    flex-shrink: 0;
+}
+
+.resolution-master-preset-add-ratio-column .resolution-master-preset-add-preset-item:hover {
+    background: var(--overlay-light-15);
+    border-color: var(--color-gray-600);
+}
+
+.resolution-master-preset-add-ratio-column .resolution-master-preset-add-preset-item.hidden {
+    border-color: var(--color-error);
+}
+
+.resolution-master-preset-add-ratio-column .resolution-master-preset-add-preset-item:hover .resolution-master-preset-add-action-btn {
+    opacity: 1;
+}
+
+/* Preset item contents - using cascade */
+.resolution-master-preset-add-ratio-column .resolution-master-preset-add-preset-name {
+    color: var(--color-gray-100);
+    font-size: var(--font-base);
+    font-weight: normal;
+    margin-bottom: var(--spacing-1);
+    word-wrap: break-word;
+    word-break: break-word;
+    max-width: 100px;
+}
+
+.resolution-master-preset-add-ratio-column .resolution-master-preset-add-preset-icon {
+    width: var(--spacing-12);
+    height: var(--spacing-12);
+    margin-left: var(--spacing-3);
+    vertical-align: middle;
+}
+
+.resolution-master-preset-add-ratio-column .resolution-master-preset-add-preset-dims {
+    color: var(--color-gray-500);
+    font-size: var(--font-sm);
+}
+
+/* Action Buttons (Delete/Toggle) - using cascade */
+.resolution-master-preset-add-ratio-column .resolution-master-preset-add-action-btn {
+    position: absolute;
+    top: var(--spacing-2);
+    right: var(--spacing-2);
+    padding: var(--spacing-2) var(--spacing-4);
+    border: none;
+    border-radius: var(--radius-sm);
+    color: var(--color-white);
+    font-size: var(--font-xs);
+    cursor: pointer;
+    opacity: 0;
+    transition: var(--transition-opacity), var(--transition-bg);
+}
+
+/* Keyboard focus shows the button */
+.resolution-master-preset-add-ratio-column .resolution-master-preset-add-action-btn:focus-visible {
+    opacity: 1;
+    outline: 2px solid var(--color-white);
+    outline-offset: 1px;
+}
+
+.resolution-master-preset-add-ratio-column .resolution-master-preset-add-action-btn.delete {
+    background: rgba(255, 80, 80, 0.8);
+}
+
+.resolution-master-preset-add-ratio-column .resolution-master-preset-add-action-btn.hide {
+    background: rgba(255, 200, 0, 0.8);
+}
+
+.resolution-master-preset-add-ratio-column .resolution-master-preset-add-action-btn.unhide {
+    background: rgba(80, 255, 80, 0.8);
+}
+
+.resolution-master-preset-add-ratio-column .resolution-master-preset-add-action-icon {
+    width: var(--spacing-12);
+    height: var(--spacing-12);
+    display: block;
+}
