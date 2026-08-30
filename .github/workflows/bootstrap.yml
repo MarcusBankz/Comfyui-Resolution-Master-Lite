@@ -9,24 +9,26 @@ permissions:
 
 jobs:
   bootstrap:
-    if: ${{ !contains(github.event.head_commit.message, '[bootstrap-done]') }}
+    if: ${{ !contains(github.event.head_commit.message, '[bootstrap-base-done]') }}
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Build Lite source from upstream
+      - name: Copy original Resolution Master source
         shell: bash
         run: |
           set -euxo pipefail
-          cp .bootstrap/lite.patch.gz.b64 /tmp/lite.patch.gz.b64
           git clone --depth 1 https://github.com/Azornes/Comfyui-Resolution-Master.git /tmp/upstream
-          rsync -a --delete --exclude='.git' --exclude='.github' --exclude='tests' /tmp/upstream/ ./
-          rm -rf .github .bootstrap tests __pycache__
-          rm -f .tracking CLONE.md RESOLUTIONMASTER.md
+          rsync -a --delete \
+            --exclude='.git' \
+            --exclude='.github' \
+            --exclude='.bootstrap' \
+            --exclude='tests' \
+            /tmp/upstream/ ./
+          rm -rf tests __pycache__
           find . -type d -name '__pycache__' -prune -exec rm -rf {} +
-          base64 -d /tmp/lite.patch.gz.b64 | gunzip > /tmp/lite.patch
-          patch -p1 < /tmp/lite.patch
+          rm -f .tracking CLONE.md RESOLUTIONMASTER.md
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add -A
-          git commit -m "Bootstrap Resolution Master Lite source [bootstrap-done]"
+          git commit -m "Bootstrap original Resolution Master source [bootstrap-base-done]"
           git push
